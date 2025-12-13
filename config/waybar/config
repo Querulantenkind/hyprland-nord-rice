@@ -65,10 +65,10 @@
 
     "network": {
         "format-wifi": "󰖩  {signalStrength}%",
-        "format-ethernet": "󰈀  {ipaddr}",
+        "format-ethernet": "󰈀  {ifname}",
         "format-linked": "󰈀  {ifname}",
         "format-disconnected": "󰖪  Offline",
-        "tooltip-format": "{essid} - {ifname} via {gwaddr}",
+        "tooltip-format": "{essid} - {ifname}",
         "on-click": "nm-connection-editor"
     },
 
