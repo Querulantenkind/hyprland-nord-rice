@@ -2,6 +2,7 @@
 
 # ╔═══════════════════════════════════════════════════════════════════════════╗
 # ║               HYPRLAND NORD RICE - INSTALL SCRIPT                         ║
+# ║                   Visual Masterpiece Edition                               ║
 # ╚═══════════════════════════════════════════════════════════════════════════╝
 
 # Nord Colors for output
@@ -10,22 +11,28 @@ NORD4='\033[38;2;216;222;233m'
 NORD8='\033[38;2;136;192;208m'
 NORD11='\033[38;2;191;97;106m'
 NORD14='\033[38;2;163;190;140m'
+NORD13='\033[38;2;235;203;139m'
 RESET='\033[0m'
 
 # Symbols
-CHECK="${NORD14}✓${RESET}"
-CROSS="${NORD11}✗${RESET}"
-ARROW="${NORD8}→${RESET}"
-INFO="${NORD8}ℹ${RESET}"
+CHECK="${NORD14}[OK]${RESET}"
+CROSS="${NORD11}[FAIL]${RESET}"
+ARROW="${NORD8}>>>${RESET}"
+INFO="${NORD8}[i]${RESET}"
+WARN="${NORD13}[!]${RESET}"
 
 # Script directory
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 CONFIG_DIR="$SCRIPT_DIR/config"
 
+# Version
+VERSION="2.0.0"
+
 echo -e ""
-    echo -e "${NORD8}╔═══════════════════════════════════════════════════════════════════╗${RESET}"
-    echo -e "${NORD8}║${RESET}     ${NORD4}HYPRLAND NORD RICE + AGS GLASS UI INSTALLER${RESET}                ${NORD8}║${RESET}"
-    echo -e "${NORD8}╚═══════════════════════════════════════════════════════════════════╝${RESET}"
+echo -e "${NORD8}+===================================================================+${RESET}"
+echo -e "${NORD8}|${RESET}     ${NORD4}HYPRLAND NORD RICE + AGS GLASS UI INSTALLER${RESET}                ${NORD8}|${RESET}"
+echo -e "${NORD8}|${RESET}              ${NORD8}Visual Masterpiece Edition v${VERSION}${RESET}               ${NORD8}|${RESET}"
+echo -e "${NORD8}+===================================================================+${RESET}"
 echo -e ""
 
 # ══════════════════════════════════════════════════════════════════════════════
@@ -48,6 +55,10 @@ print_info() {
     echo -e "${INFO} $1"
 }
 
+print_warn() {
+    echo -e "${WARN} $1"
+}
+
 command_exists() {
     command -v "$1" &> /dev/null
 }
@@ -57,6 +68,8 @@ command_exists() {
 # ══════════════════════════════════════════════════════════════════════════════
 
 detect_package_manager() {
+    print_status "Detecting package manager..."
+
     if command_exists pacman; then
         PKG_MANAGER="pacman"
         PKG_INSTALL="sudo pacman -S --noconfirm --needed"
@@ -78,10 +91,45 @@ detect_package_manager() {
         PKG_MANAGER="zypper"
         PKG_INSTALL="sudo zypper install -y"
     else
-        print_error "Kein unterstützter Paketmanager gefunden!"
+        print_error "No supported package manager found!"
         exit 1
     fi
-    print_success "Paketmanager erkannt: $PKG_MANAGER"
+    print_success "Package manager detected: $PKG_MANAGER"
+
+    if [ -n "$AUR_HELPER" ]; then
+        print_success "AUR helper detected: $AUR_HELPER"
+    elif [ "$PKG_MANAGER" == "pacman" ]; then
+        print_warn "No AUR helper found. Installing yay..."
+        install_yay
+    fi
+}
+
+# ══════════════════════════════════════════════════════════════════════════════
+# INSTALL YAY (AUR HELPER)
+# ══════════════════════════════════════════════════════════════════════════════
+
+install_yay() {
+    print_status "Installing yay AUR helper..."
+
+    if ! command_exists git; then
+        sudo pacman -S --noconfirm git base-devel
+    fi
+
+    TEMP_DIR=$(mktemp -d)
+    cd "$TEMP_DIR" || exit 1
+    git clone https://aur.archlinux.org/yay.git
+    cd yay || exit 1
+    makepkg -si --noconfirm
+    cd "$SCRIPT_DIR" || exit 1
+    rm -rf "$TEMP_DIR"
+
+    if command_exists yay; then
+        AUR_HELPER="yay"
+        AUR_INSTALL="yay -S --noconfirm --needed"
+        print_success "yay installed successfully"
+    else
+        print_error "Failed to install yay"
+    fi
 }
 
 # ══════════════════════════════════════════════════════════════════════════════
@@ -89,8 +137,8 @@ detect_package_manager() {
 # ══════════════════════════════════════════════════════════════════════════════
 
 install_packages() {
-    print_status "Installiere benötigte Pakete..."
-    
+    print_status "Installing required packages..."
+
     # Base packages (available in most distros)
     BASE_PACKAGES=(
         "hyprland"
@@ -109,20 +157,16 @@ install_packages() {
         "pavucontrol"
         "network-manager-applet"
         "polkit-gnome"
+        "jq"
+        "bc"
+        "curl"
+        "wget"
     )
-    
-    # Arch-specific packages
+
+    # Arch-specific packages (official repos)
     ARCH_PACKAGES=(
-        "hyprpaper"
-        "hyprlock"
-        "hypridle"
-        "wlogout"
-        "cliphist"
-        "ttf-jetbrains-mono-nerd"
         "qt5ct"
         "xdg-desktop-portal-hyprland"
-        # AGS Glass UI dependencies
-        "ags"
         "gjs"
         "gtk3"
         "libnotify"
@@ -132,38 +176,57 @@ install_packages() {
         "bluez"
         "bluez-utils"
     )
-    
+
+    # AUR packages
+    AUR_PACKAGES=(
+        "hyprpaper"
+        "hyprlock"
+        "hypridle"
+        "wlogout"
+        "cliphist"
+        "ttf-jetbrains-mono-nerd"
+        "aylurs-gtk-shell"
+        "cava"
+    )
+
     case $PKG_MANAGER in
         pacman)
-            print_info "Installiere Basis-Pakete..."
-            $PKG_INSTALL ${BASE_PACKAGES[@]} 2>/dev/null
-            
+            print_info "Installing base packages..."
+            $PKG_INSTALL "${BASE_PACKAGES[@]}" 2>/dev/null || true
+
+            print_info "Installing Arch-specific packages..."
+            $PKG_INSTALL "${ARCH_PACKAGES[@]}" 2>/dev/null || true
+
             if [ -n "$AUR_HELPER" ]; then
-                print_info "Installiere AUR-Pakete mit $AUR_HELPER..."
-                $AUR_INSTALL ${ARCH_PACKAGES[@]} 2>/dev/null
+                print_info "Installing AUR packages with $AUR_HELPER..."
+                $AUR_INSTALL "${AUR_PACKAGES[@]}" 2>/dev/null || true
             else
-                print_info "Kein AUR-Helper gefunden. Installiere manuelle Pakete..."
-                $PKG_INSTALL ${ARCH_PACKAGES[@]} 2>/dev/null
+                print_warn "No AUR helper available. Some packages need manual installation:"
+                print_info "  - hyprpaper, hyprlock, hypridle, wlogout"
+                print_info "  - cliphist, ttf-jetbrains-mono-nerd"
+                print_info "  - aylurs-gtk-shell (AGS), cava"
             fi
             ;;
         apt)
-            print_info "Installiere Pakete für Debian/Ubuntu..."
-            $PKG_INSTALL ${BASE_PACKAGES[@]} 2>/dev/null
-            print_info "Hinweis: Einige Pakete müssen manuell installiert werden (hyprpaper, hyprlock, etc.)"
+            print_info "Installing packages for Debian/Ubuntu..."
+            $PKG_INSTALL "${BASE_PACKAGES[@]}" 2>/dev/null || true
+            print_warn "Some packages need manual installation on Debian/Ubuntu:"
+            print_info "  - hyprpaper, hyprlock, hypridle, AGS, cava"
+            print_info "  - Visit: https://github.com/Aylur/ags for AGS installation"
             ;;
         dnf)
-            print_info "Installiere Pakete für Fedora..."
-            $PKG_INSTALL ${BASE_PACKAGES[@]} 2>/dev/null
-            print_info "Hinweis: Einige Pakete müssen manuell installiert werden"
+            print_info "Installing packages for Fedora..."
+            $PKG_INSTALL "${BASE_PACKAGES[@]}" 2>/dev/null || true
+            print_warn "Some packages need manual installation on Fedora"
             ;;
         zypper)
-            print_info "Installiere Pakete für openSUSE..."
-            $PKG_INSTALL ${BASE_PACKAGES[@]} 2>/dev/null
-            print_info "Hinweis: Einige Pakete müssen manuell installiert werden"
+            print_info "Installing packages for openSUSE..."
+            $PKG_INSTALL "${BASE_PACKAGES[@]}" 2>/dev/null || true
+            print_warn "Some packages need manual installation on openSUSE"
             ;;
     esac
-    
-    print_success "Paketinstallation abgeschlossen!"
+
+    print_success "Package installation completed!"
 }
 
 # ══════════════════════════════════════════════════════════════════════════════
@@ -171,20 +234,50 @@ install_packages() {
 # ══════════════════════════════════════════════════════════════════════════════
 
 backup_config() {
-    print_status "Erstelle Backup der bestehenden Konfiguration..."
-    
+    print_status "Creating backup of existing configuration..."
+
     BACKUP_DIR="$HOME/.config/hyprland-backup-$(date +%Y%m%d_%H%M%S)"
-    
-    if [ -d "$HOME/.config/hypr" ] || [ -d "$HOME/.config/waybar" ] || [ -d "$HOME/.config/wofi" ]; then
+
+    # List of configs to backup
+    CONFIGS_TO_BACKUP=(
+        "hypr"
+        "waybar"
+        "wofi"
+        "dunst"
+        "wlogout"
+        "kitty"
+        "btop"
+        "ags"
+        "cava"
+    )
+
+    BACKUP_NEEDED=false
+    for config in "${CONFIGS_TO_BACKUP[@]}"; do
+        if [ -d "$HOME/.config/$config" ]; then
+            BACKUP_NEEDED=true
+            break
+        fi
+    done
+
+    if [ "$BACKUP_NEEDED" = true ]; then
         mkdir -p "$BACKUP_DIR"
-        
-        [ -d "$HOME/.config/hypr" ] && cp -r "$HOME/.config/hypr" "$BACKUP_DIR/"
-        [ -d "$HOME/.config/waybar" ] && cp -r "$HOME/.config/waybar" "$BACKUP_DIR/"
-        [ -d "$HOME/.config/wofi" ] && cp -r "$HOME/.config/wofi" "$BACKUP_DIR/"
-        
-        print_success "Backup erstellt in: $BACKUP_DIR"
+
+        for config in "${CONFIGS_TO_BACKUP[@]}"; do
+            if [ -d "$HOME/.config/$config" ]; then
+                cp -r "$HOME/.config/$config" "$BACKUP_DIR/"
+                print_info "Backed up: $config"
+            fi
+        done
+
+        # Also backup scripts if they exist
+        if [ -d "$HOME/.config/scripts" ]; then
+            cp -r "$HOME/.config/scripts" "$BACKUP_DIR/"
+            print_info "Backed up: scripts"
+        fi
+
+        print_success "Backup created in: $BACKUP_DIR"
     else
-        print_info "Keine bestehende Konfiguration gefunden."
+        print_info "No existing configuration found to backup."
     fi
 }
 
@@ -193,103 +286,94 @@ backup_config() {
 # ══════════════════════════════════════════════════════════════════════════════
 
 install_config() {
-    print_status "Installiere Konfigurationsdateien..."
-    
-    # Create directories
+    print_status "Installing configuration files..."
+
+    # Create required directories
     mkdir -p "$HOME/.config/hypr/wallpapers"
-    mkdir -p "$HOME/.config/waybar"
-    mkdir -p "$HOME/.config/wofi"
+    mkdir -p "$HOME/.config/waybar/scripts"
+    mkdir -p "$HOME/.config/wofi/scripts"
+    mkdir -p "$HOME/.config/dunst/scripts"
+    mkdir -p "$HOME/.config/wlogout"
+    mkdir -p "$HOME/.config/hypridle"
+    mkdir -p "$HOME/.config/kitty/themes"
+    mkdir -p "$HOME/.config/btop/themes"
+    mkdir -p "$HOME/.config/ags/widgets"
+    mkdir -p "$HOME/.config/ags/windows"
+    mkdir -p "$HOME/.config/ags/services"
+    mkdir -p "$HOME/.config/scripts"
+    mkdir -p "$HOME/.config/cava"
+    mkdir -p "$HOME/.config/docs"
     mkdir -p "$HOME/Pictures/Screenshots"
-    
-    # Copy configs
-    if [ -d "$CONFIG_DIR/hypr" ]; then
-        cp -r "$CONFIG_DIR/hypr/"* "$HOME/.config/hypr/"
-        print_success "Hyprland-Konfiguration installiert"
-    fi
-    
-    if [ -d "$CONFIG_DIR/waybar" ]; then
-        cp -r "$CONFIG_DIR/waybar/"* "$HOME/.config/waybar/"
-        print_success "Waybar-Konfiguration installiert"
-    fi
-    
-    if [ -d "$CONFIG_DIR/wofi" ]; then
-        cp -r "$CONFIG_DIR/wofi/"* "$HOME/.config/wofi/"
-        print_success "Wofi-Konfiguration installiert"
-    fi
 
-    if [ -d "$CONFIG_DIR/dunst" ]; then
-        cp -r "$CONFIG_DIR/dunst/"* "$HOME/.config/dunst/"
-        print_success "Dunst-Konfiguration installiert"
-    fi
+    # Copy all configurations
+    declare -A CONFIG_MAPPINGS=(
+        ["hypr"]="hypr"
+        ["waybar"]="waybar"
+        ["wofi"]="wofi"
+        ["dunst"]="dunst"
+        ["wlogout"]="wlogout"
+        ["hypridle"]="hypridle"
+        ["kitty"]="kitty"
+        ["btop"]="btop"
+        ["ags"]="ags"
+        ["scripts"]="scripts"
+        ["cava"]="cava"
+        ["docs"]="docs"
+    )
 
-    if [ -d "$CONFIG_DIR/wlogout" ]; then
-        cp -r "$CONFIG_DIR/wlogout/"* "$HOME/.config/wlogout/"
-        print_success "Wlogout-Konfiguration installiert"
-    fi
+    for src in "${!CONFIG_MAPPINGS[@]}"; do
+        dest="${CONFIG_MAPPINGS[$src]}"
+        if [ -d "$CONFIG_DIR/$src" ]; then
+            cp -r "$CONFIG_DIR/$src/"* "$HOME/.config/$dest/" 2>/dev/null || true
+            print_success "Installed: $src"
+        fi
+    done
 
-    if [ -d "$CONFIG_DIR/hypridle" ]; then
-        cp -r "$CONFIG_DIR/hypridle/"* "$HOME/.config/hypridle/"
-        print_success "Hypridle-Konfiguration installiert"
-    fi
+    # Make all scripts executable
+    print_info "Making scripts executable..."
+    find "$HOME/.config/scripts" -name "*.sh" -exec chmod +x {} \; 2>/dev/null || true
+    find "$HOME/.config/waybar/scripts" -name "*.sh" -exec chmod +x {} \; 2>/dev/null || true
+    find "$HOME/.config/wofi/scripts" -name "*.sh" -exec chmod +x {} \; 2>/dev/null || true
+    find "$HOME/.config/dunst/scripts" -name "*.sh" -exec chmod +x {} \; 2>/dev/null || true
+    find "$HOME/.config/kitty" -name "*.sh" -exec chmod +x {} \; 2>/dev/null || true
 
-    if [ -d "$CONFIG_DIR/kitty" ]; then
-        cp -r "$CONFIG_DIR/kitty/"* "$HOME/.config/kitty/"
-        print_success "Kitty-Konfiguration installiert"
-    fi
+    print_success "All configurations installed!"
+}
 
-    if [ -d "$CONFIG_DIR/btop" ]; then
-        cp -r "$CONFIG_DIR/btop/"* "$HOME/.config/btop/"
-        print_success "Btop-Konfiguration installiert"
-    fi
+# ══════════════════════════════════════════════════════════════════════════════
+# CREATE CAVA FIFO
+# ══════════════════════════════════════════════════════════════════════════════
 
-    if [ -d "$CONFIG_DIR/scripts" ]; then
-        mkdir -p "$HOME/.config/scripts"
-        cp -r "$CONFIG_DIR/scripts/"* "$HOME/.config/scripts/"
-        print_success "Bonus-Scripts installiert"
-    fi
+setup_cava() {
+    print_status "Setting up Cava audio visualizer..."
 
-    if [ -d "$CONFIG_DIR/ags" ]; then
-        mkdir -p "$HOME/.config/ags"
-        cp -r "$CONFIG_DIR/ags/"* "$HOME/.config/ags/"
-        print_success "AGS Glass UI installiert"
-    fi
-
-    if [ -d "$CONFIG_DIR/docs" ]; then
-        mkdir -p "$HOME/.config/docs"
-        cp -r "$CONFIG_DIR/docs/"* "$HOME/.config/docs/"
-        print_success "Dokumentation installiert"
+    # Create FIFO for cava output
+    if [ ! -p /tmp/cava.fifo ]; then
+        mkfifo /tmp/cava.fifo 2>/dev/null || true
+        print_success "Created cava FIFO"
+    else
+        print_info "Cava FIFO already exists"
     fi
 }
 
 # ══════════════════════════════════════════════════════════════════════════════
-# DOWNLOAD WALLPAPER
+# DOWNLOAD WALLPAPERS
 # ══════════════════════════════════════════════════════════════════════════════
 
-download_wallpaper() {
-    print_status "Lade Nord-Wallpaper herunter..."
-    
+download_wallpapers() {
+    print_status "Setting up wallpapers..."
+
     WALLPAPER_DIR="$HOME/.config/hypr/wallpapers"
     mkdir -p "$WALLPAPER_DIR"
-    
-    # Nord-themed wallpaper URL (using a commonly available nord wallpaper)
-    WALLPAPER_URL="https://raw.githubusercontent.com/nordtheme/assets/main/wallpapers/nord-visual-studio-code-editor-0.1.0.png"
-    
-    if command_exists curl; then
-        curl -sL "$WALLPAPER_URL" -o "$WALLPAPER_DIR/nord-mountains.jpg" 2>/dev/null || {
-            print_info "Wallpaper konnte nicht heruntergeladen werden."
-            print_info "Bitte manuell ein Wallpaper nach $WALLPAPER_DIR/nord-mountains.jpg kopieren."
-        }
-    elif command_exists wget; then
-        wget -q "$WALLPAPER_URL" -O "$WALLPAPER_DIR/nord-mountains.jpg" 2>/dev/null || {
-            print_info "Wallpaper konnte nicht heruntergeladen werden."
-            print_info "Bitte manuell ein Wallpaper nach $WALLPAPER_DIR/nord-mountains.jpg kopieren."
-        }
+
+    # Check if wallpapers already exist from config
+    if [ -d "$CONFIG_DIR/hypr/wallpapers" ] && [ "$(ls -A "$CONFIG_DIR/hypr/wallpapers" 2>/dev/null)" ]; then
+        print_success "Wallpapers already included in config"
     else
-        print_info "Weder curl noch wget gefunden. Bitte Wallpaper manuell herunterladen."
-    fi
-    
-    if [ -f "$WALLPAPER_DIR/nord-mountains.jpg" ]; then
-        print_success "Wallpaper heruntergeladen"
+        print_info "You can add Nord wallpapers to: $WALLPAPER_DIR"
+        print_info "Recommended sources:"
+        print_info "  - https://github.com/nordtheme/assets"
+        print_info "  - https://www.nordtheme.com/"
     fi
 }
 
@@ -298,22 +382,43 @@ download_wallpaper() {
 # ══════════════════════════════════════════════════════════════════════════════
 
 install_gtk_theme() {
-    print_status "Möchtest du das Nordic GTK-Theme installieren? (y/n)"
+    echo -e ""
+    print_status "Would you like to install the Nordic GTK theme? (y/n)"
     read -r response
-    
+
     if [[ "$response" =~ ^[Yy]$ ]]; then
         case $PKG_MANAGER in
             pacman)
                 if [ -n "$AUR_HELPER" ]; then
-                    $AUR_INSTALL nordic-theme 2>/dev/null
-                    print_success "Nordic GTK-Theme installiert"
+                    $AUR_INSTALL nordic-theme 2>/dev/null || true
+                    print_success "Nordic GTK theme installed"
                 fi
                 ;;
             *)
-                print_info "Bitte installiere das Nordic-Theme manuell von:"
+                print_info "Please install the Nordic theme manually from:"
                 print_info "https://github.com/EliverLara/Nordic"
                 ;;
         esac
+    fi
+}
+
+# ══════════════════════════════════════════════════════════════════════════════
+# ENABLE SERVICES
+# ══════════════════════════════════════════════════════════════════════════════
+
+enable_services() {
+    print_status "Enabling system services..."
+
+    # Enable Bluetooth
+    if command_exists bluetoothctl; then
+        sudo systemctl enable bluetooth.service 2>/dev/null || true
+        print_success "Bluetooth service enabled"
+    fi
+
+    # Enable NetworkManager
+    if command_exists nmcli; then
+        sudo systemctl enable NetworkManager.service 2>/dev/null || true
+        print_success "NetworkManager service enabled"
     fi
 }
 
@@ -323,33 +428,48 @@ install_gtk_theme() {
 
 post_install() {
     echo -e ""
-    echo -e "${NORD8}╔═══════════════════════════════════════════════════════════════════╗${RESET}"
-    echo -e "${NORD8}║${RESET}                  ${NORD14}INSTALLATION ABGESCHLOSSEN!${RESET}                     ${NORD8}║${RESET}"
-    echo -e "${NORD8}╚═══════════════════════════════════════════════════════════════════╝${RESET}"
+    echo -e "${NORD8}+===================================================================+${RESET}"
+    echo -e "${NORD8}|${RESET}                  ${NORD14}INSTALLATION COMPLETE!${RESET}                        ${NORD8}|${RESET}"
+    echo -e "${NORD8}+===================================================================+${RESET}"
     echo -e ""
-    echo -e "${NORD4}Wichtige Tastenkombinationen:${RESET}"
+    echo -e "${NORD4}Basic Keybindings:${RESET}"
     echo -e ""
-    echo -e "  ${NORD8}SUPER + Return${RESET}     → Terminal (Kitty)"
-    echo -e "  ${NORD8}SUPER + Space${RESET}      → App-Launcher (Wofi)"
-    echo -e "  ${NORD8}SUPER + Q${RESET}          → Fenster schließen"
-    echo -e "  ${NORD8}SUPER + F${RESET}          → Vollbild"
-    echo -e "  ${NORD8}SUPER + E${RESET}          → Dateimanager"
-    echo -e "  ${NORD8}SUPER + B${RESET}          → Browser"
-    echo -e "  ${NORD8}SUPER + 1-0${RESET}        → Workspace wechseln"
-    echo -e "  ${NORD8}SUPER + SHIFT + Q${RESET}  → Hyprland beenden"
-    echo -e "  ${NORD8}Print${RESET}              → Screenshot (Bereich)"
+    echo -e "  ${NORD8}SUPER + Return${RESET}       Terminal (Kitty)"
+    echo -e "  ${NORD8}SUPER + Space${RESET}        App-Launcher (Wofi)"
+    echo -e "  ${NORD8}SUPER + Q${RESET}            Close window"
+    echo -e "  ${NORD8}SUPER + F${RESET}            Fullscreen"
+    echo -e "  ${NORD8}SUPER + E${RESET}            File manager"
+    echo -e "  ${NORD8}SUPER + B${RESET}            Browser"
+    echo -e "  ${NORD8}SUPER + 1-0${RESET}          Switch workspace"
+    echo -e "  ${NORD8}SUPER + Escape${RESET}       Lock screen"
+    echo -e "  ${NORD8}Print${RESET}                Screenshot"
     echo -e ""
-    echo -e "  ${NORD8}SUPER + CTRL + Space${RESET} → AGS Quick Settings"
-    echo -e "  ${NORD8}SUPER + CTRL + P${RESET}     → AGS Power Menu"
-    echo -e "  ${NORD8}SUPER + CTRL + O${RESET}     → AGS Overview"
+    echo -e "${NORD4}AGS Glass UI Controls:${RESET}"
     echo -e ""
-    echo -e "${NORD4}Nächste Schritte:${RESET}"
+    echo -e "  ${NORD8}SUPER + CTRL + Space${RESET} Quick Settings"
+    echo -e "  ${NORD8}SUPER + CTRL + D${RESET}     Mini Dashboard"
+    echo -e "  ${NORD8}SUPER + CTRL + P${RESET}     Power Menu"
+    echo -e "  ${NORD8}SUPER + CTRL + N${RESET}     Notification Center"
+    echo -e "  ${NORD8}SUPER + CTRL + W${RESET}     Workspace Preview"
+    echo -e "  ${NORD8}SUPER + A${RESET}            Fullscreen Dashboard"
     echo -e ""
-    echo -e "  1. Logge dich aus und wähle Hyprland als Session"
-    echo -e "  2. Passe die Konfiguration in ~/.config/hypr/ an"
-    echo -e "  3. Füge ein Nord-Wallpaper hinzu: ~/.config/hypr/wallpapers/"
+    echo -e "${NORD4}Visual Effects:${RESET}"
     echo -e ""
-    echo -e "${NORD8}Viel Spaß mit deinem neuen Nord-Rice! ❄${RESET}"
+    echo -e "  ${NORD8}SUPER + CTRL + V${RESET}     Toggle Audio Visualizer"
+    echo -e "  ${NORD8}SUPER + CTRL + X${RESET}     Toggle Dynamic Borders"
+    echo -e "  ${NORD8}SUPER + CTRL + G${RESET}     Toggle Screen Glow"
+    echo -e "  ${NORD8}SUPER + CTRL + S${RESET}     Snow Particles"
+    echo -e "  ${NORD8}SUPER + CTRL + A${RESET}     Aurora Particles"
+    echo -e "  ${NORD8}SUPER + CTRL + R${RESET}     Random Particles"
+    echo -e ""
+    echo -e "${NORD4}Next Steps:${RESET}"
+    echo -e ""
+    echo -e "  1. Log out and select Hyprland as your session"
+    echo -e "  2. Customize configuration in ~/.config/hypr/"
+    echo -e "  3. Add Nord wallpapers to ~/.config/hypr/wallpapers/"
+    echo -e "  4. Run 'cava' to start the audio visualizer"
+    echo -e ""
+    echo -e "${NORD8}Enjoy your Nord Rice - A Visual Masterpiece!${RESET}"
     echo -e ""
 }
 
@@ -360,31 +480,35 @@ post_install() {
 main() {
     # Check if running as root
     if [ "$EUID" -eq 0 ]; then
-        print_error "Bitte nicht als root ausführen!"
+        print_error "Please do not run as root!"
         exit 1
     fi
-    
-    echo -e "${NORD4}Dieses Script wird folgendes tun:${RESET}"
-    echo -e "  ${ARROW} Benötigte Pakete installieren (inkl. AGS Glass UI)"
-    echo -e "  ${ARROW} Bestehende Config sichern"
-    echo -e "  ${ARROW} Nord-Rice + AGS Glass UI Config installieren"
-    echo -e "  ${ARROW} Wallpaper herunterladen"
+
+    echo -e "${NORD4}This script will:${RESET}"
+    echo -e "  ${ARROW} Install all required packages (including AGS, cava)"
+    echo -e "  ${ARROW} Backup existing configuration"
+    echo -e "  ${ARROW} Install Nord Rice + AGS Glass UI"
+    echo -e "  ${ARROW} Install visual effects (particles, glow, shake)"
+    echo -e "  ${ARROW} Setup audio visualizer"
+    echo -e "  ${ARROW} Enable required services"
     echo -e ""
-    echo -e "${NORD4}Fortfahren? (y/n)${RESET}"
+    echo -e "${NORD4}Continue? (y/n)${RESET}"
     read -r response
-    
+
     if [[ ! "$response" =~ ^[Yy]$ ]]; then
-        print_info "Installation abgebrochen."
+        print_info "Installation cancelled."
         exit 0
     fi
-    
+
     echo -e ""
-    
+
     detect_package_manager
     install_packages
     backup_config
     install_config
-    download_wallpaper
+    setup_cava
+    download_wallpapers
+    enable_services
     install_gtk_theme
     post_install
 }

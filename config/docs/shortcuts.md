@@ -114,6 +114,34 @@ All available keybindings in the Hyprland Nord Rice setup. `$mainMod` is the SUP
 | `$mainMod CTRL + P` | Power Menu | Opens power/logout menu |
 | `$mainMod CTRL + O` | Workspace Overview | Shows workspace overview |
 | `$mainMod CTRL + D` | Mini Dashboard | Opens compact control dashboard |
+| `$mainMod CTRL + B` | AGS Bar | Toggle AGS Ice Pill Bar |
+| `$mainMod CTRL + W` | Workspace Preview | Full workspace preview with thumbnails |
+| `$mainMod CTRL + N` | Notification Center | Opens notification center with actions |
+
+## Visual Effects
+
+| Keybinding | Action | Description |
+|------------|--------|-------------|
+| `$mainMod CTRL + V` | Audio Visualizer | Toggle cava audio visualizer |
+| `$mainMod CTRL + X` | Dynamic Borders | Toggle application-specific border colors |
+| `$mainMod CTRL + G` | Screen Glow | Toggle ambient screen glow effect |
+
+## Particle Effects
+
+| Keybinding | Action | Description |
+|------------|--------|-------------|
+| `$mainMod CTRL + S` | Snow | Snowflakes particle effect |
+| `$mainMod CTRL + A` | Aurora | Aurora borealis particle effect |
+| `$mainMod CTRL + T` | Stars | Twinkling star field effect |
+| `$mainMod CTRL + U` | Success | Success particle burst |
+| `$mainMod CTRL + R` | Random | Random particle effect |
+
+## Window Feedback Effects
+
+| Keybinding | Action | Description |
+|------------|--------|-------------|
+| `$mainMod CTRL + E` | Error Shake | Red shake animation for errors |
+| `$mainMod CTRL + I` | Info Shake | Blue shake animation for info |
 
 ## Easter Eggs & Bonus Features
 

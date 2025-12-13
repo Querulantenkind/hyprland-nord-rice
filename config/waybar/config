@@ -9,7 +9,7 @@
 
     "modules-left": ["hyprland/workspaces"],
     "modules-center": ["clock"],
-    "modules-right": ["tray", "cpu", "memory", "temperature", "pulseaudio", "network", "battery", "custom/updates", "custom/weather", "custom/power"],
+    "modules-right": ["tray", "cpu", "memory", "temperature", "pulseaudio", "network", "battery", "custom/audio-visualizer", "custom/updates", "custom/weather", "custom/power"],
 
     "hyprland/workspaces": {
         "format": "{icon}",
@@ -124,6 +124,15 @@
         "return-type": "json",
         "interval": 1800,
         "exec": "~/.config/waybar/scripts/weather.sh",
+        "tooltip": true
+    },
+
+    "custom/audio-visualizer": {
+        "format": "{}",
+        "return-type": "json",
+        "interval": 1,
+        "exec": "~/.config/waybar/scripts/audio-visualizer.sh",
+        "on-click": "~/.config/waybar/scripts/audio-visualizer.sh toggle",
         "tooltip": true
     },
 

@@ -4,6 +4,7 @@
 
 import Widget from 'resource:///com/github/Aylur/ags/widget.js';
 import { WindowPill } from '../widgets/window.js';
+import { AudioVisualizerCompact } from '../widgets/audio-visualizer.js';
 
 export default () => Widget.Window({
     name: 'bar',
@@ -24,7 +25,7 @@ export default () => Widget.Window({
         endWidget: Widget.Box({
             className: 'bar-right',
             children: [
-                // Hier können weitere Widgets hinzugefügt werden
+                AudioVisualizerCompact(),
             ],
         }),
     }),

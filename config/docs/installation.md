@@ -1,15 +1,16 @@
-# 🚀 Hyprland Nord Rice - Installation
+# Hyprland Nord Rice - Installation
 
 ## Übersicht
 
-Schritt-für-Schritt Anleitung zur Installation des Hyprland Nord Rice Setups. Automatische und manuelle Installationsoptionen verfügbar.
+Schritt-für-Schritt Anleitung zur Installation des Hyprland Nord Rice Setups - Visual Masterpiece Edition. Automatische und manuelle Installationsoptionen verfügbar.
 
-## 🔍 Systemvoraussetzungen
+## Systemvoraussetzungen
 
 ### Hardware-Anforderungen
 - **GPU:** Vulkan-kompatible Grafikkarte (NVIDIA, AMD, Intel)
 - **RAM:** Mindestens 4GB (8GB empfohlen)
 - **Speicher:** 10GB freier Festplattenspeicher
+- **Audio:** PipeWire oder PulseAudio für Audio-Visualizer
 
 ### Software-Voraussetzungen
 - **Arch Linux** (oder kompatible Distribution)
@@ -29,7 +30,7 @@ cd ..
 rm -rf yay
 ```
 
-## 📦 Automatische Installation (Empfohlen)
+## Automatische Installation (Empfohlen)
 
 ### 1. Repository klonen
 ```bash
@@ -44,13 +45,16 @@ chmod +x install.sh
 ```
 
 ### 3. Installation verfolgen
-Das Script wird:
-- ✅ Paketmanager erkennen (pacman/apt/dnf/zypper)
-- ✅ Abhängigkeiten automatisch installieren
-- ✅ Bestehende Konfiguration sichern
-- ✅ Neue Konfiguration installieren
-- ✅ Wallpaper herunterladen
-- ✅ GTK-Theme optional installieren
+Das Script wird automatisch:
+- Paketmanager erkennen (pacman/apt/dnf/zypper)
+- AUR-Helper (yay) installieren falls nicht vorhanden
+- Alle Abhängigkeiten installieren (inkl. AGS, cava)
+- Bestehende Konfiguration sichern
+- Neue Konfiguration mit visuellen Effekten installieren
+- Scripts ausführbar machen
+- Services aktivieren (Bluetooth, NetworkManager)
+- Cava FIFO für Audio-Visualizer erstellen
+- Optional: GTK-Theme installieren
 
 ### 4. Post-Installation
 Nach der Installation:
@@ -58,7 +62,7 @@ Nach der Installation:
 2. **Hyprland** als Session auswählen
 3. **Einloggen** und Setup genießen
 
-## 🔧 Manuelle Installation
+## Manuelle Installation
 
 ### Schritt 1: Basis-Pakete installieren
 ```bash
@@ -66,22 +70,34 @@ Nach der Installation:
 sudo pacman -S hyprland waybar wofi kitty
 
 # Audio & Multimedia
-sudo pacman -S pipewire pipewire-pulse pavucontrol
+sudo pacman -S pipewire pipewire-pulse pavucontrol playerctl
 
 # System Tools
 sudo pacman -S thunar firefox dunst grim slurp wl-clipboard
 sudo pacman -S brightnessctl network-manager-applet polkit-gnome
 
-# Utilities
-sudo pacman -S btop jq curl wget imagemagick
+# Utilities (wichtig für Visual Effects)
+sudo pacman -S btop jq bc curl wget zsh
+
+# Bluetooth
+sudo pacman -S bluez bluez-utils
+
+# AGS Dependencies
+sudo pacman -S gjs gtk3 libnotify sassc wireplumber
 ```
 
 ### Schritt 2: AUR-Pakete installieren
 ```bash
 # Mit yay
 yay -S hyprpaper hyprlock hypridle wlogout cliphist
-yay -S ttf-jetbrains-mono-nerd
+yay -S ttf-jetbrains-mono-nerd qt5ct
 yay -S xdg-desktop-portal-hyprland
+
+# AGS (Aylur's GTK Shell)
+yay -S aylurs-gtk-shell
+
+# Audio Visualizer
+yay -S cava
 ```
 
 ### Schritt 3: Konfiguration installieren
@@ -91,10 +107,12 @@ git clone https://github.com/your-username/hyprland-nord-rice.git
 cd hyprland-nord-rice
 
 # Backup erstellen
-mkdir -p ~/.config/backup
-cp -r ~/.config/hypr ~/.config/backup/ 2>/dev/null || true
-cp -r ~/.config/waybar ~/.config/backup/ 2>/dev/null || true
-cp -r ~/.config/wofi ~/.config/backup/ 2>/dev/null || true
+BACKUP_DIR="$HOME/.config/hyprland-backup-$(date +%Y%m%d_%H%M%S)"
+mkdir -p "$BACKUP_DIR"
+cp -r ~/.config/hypr "$BACKUP_DIR/" 2>/dev/null || true
+cp -r ~/.config/waybar "$BACKUP_DIR/" 2>/dev/null || true
+cp -r ~/.config/wofi "$BACKUP_DIR/" 2>/dev/null || true
+cp -r ~/.config/ags "$BACKUP_DIR/" 2>/dev/null || true
 
 # Konfiguration kopieren
 cp -r config/hypr ~/.config/
@@ -105,195 +123,188 @@ cp -r config/dunst ~/.config/
 cp -r config/btop ~/.config/
 cp -r config/wlogout ~/.config/
 cp -r config/hypridle ~/.config/
+cp -r config/ags ~/.config/
+cp -r config/cava ~/.config/
 cp -r config/scripts ~/.config/
 cp -r config/docs ~/.config/
 ```
 
-### Schritt 4: Wallpaper einrichten
+### Schritt 4: Scripts ausführbar machen
 ```bash
-# Verzeichnis erstellen
-mkdir -p ~/.config/hypr/wallpapers
-mkdir -p ~/Pictures/Screenshots
-
-# Wallpaper herunterladen
-curl -L "https://raw.githubusercontent.com/nordtheme/assets/main/wallpapers/nord-visual-studio-code-editor-0.1.0.png" \
-     -o ~/.config/hypr/wallpapers/nord-mountains.jpg
-```
-
-### Schritt 5: Berechtigungen setzen
-```bash
-# Scripts ausführbar machen
+# Alle Scripts ausführbar machen
+chmod +x ~/.config/scripts/*.sh
 chmod +x ~/.config/waybar/scripts/*.sh
 chmod +x ~/.config/wofi/scripts/*.sh
-chmod +x ~/.config/scripts/*.sh
+chmod +x ~/.config/dunst/scripts/*.sh
 chmod +x ~/.config/kitty/switch-theme.sh
+```
+
+### Schritt 5: Cava FIFO erstellen
+```bash
+# FIFO für Audio-Visualizer erstellen
+mkfifo /tmp/cava.fifo
 ```
 
 ### Schritt 6: Services aktivieren
 ```bash
-# Bluetooth (optional)
+# Bluetooth
 sudo systemctl enable bluetooth
 
 # NetworkManager
 sudo systemctl enable NetworkManager
-
-# Polkit Agent
-# Wird automatisch über exec-once gestartet
 ```
 
-## 🎨 Optionale Ergänzungen
+## Installierte Features
+
+### Core Components
+- **Hyprland** - Wayland Compositor mit Blur und Animationen
+- **Waybar** - Status-Bar mit Workspaces, Clock, System-Monitoring
+- **Wofi** - Application Launcher
+- **Kitty** - Terminal Emulator
+- **Dunst** - Notification Daemon
+
+### AGS Glass UI
+- **Quick Settings** - Audio/Brightness/Network Controls
+- **Mini Dashboard** - Compact Quick-Access Panel
+- **Fullscreen Dashboard** - GNOME/macOS Style Overview
+- **Power Menu** - Elegant System Menu
+- **Notification Center** - Grouped Notifications
+- **Workspace Preview** - Animated Workspace Overview
+- **Ice Pill Bar** - Floating Window Indicator
+
+### Visual Effects
+- **Audio Visualizer** - Cava-basierte Musik-Visualisierung
+- **Dynamic Borders** - Anwendungsspezifische Border-Farben
+- **Particle Effects** - Schneeflocken, Aurora, Sterne
+- **Screen Glow** - Ambient Glow basierend auf aktiver App
+- **Window Shake** - Visuelles Feedback für Fehler/Warnungen
+
+## Optionale Ergänzungen
 
 ### GTK Theme (Nordic)
 ```bash
-# AUR Theme installieren
 yay -S nordic-theme
 
 # GTK-Konfiguration
+mkdir -p ~/.config/gtk-3.0
+echo '[Settings]' > ~/.config/gtk-3.0/settings.ini
 echo 'gtk-theme-name=Nordic' >> ~/.config/gtk-3.0/settings.ini
 echo 'gtk-icon-theme-name=Papirus-Dark' >> ~/.config/gtk-3.0/settings.ini
 ```
 
 ### Cursor Theme (Nordzy)
 ```bash
-# Cursor Theme installieren
 yay -S nordzy-cursors
-
-# Hyprland Konfiguration anpassen
-echo 'env = XCURSOR_THEME,Nordzy-cursors' >> ~/.config/hypr/hyprland.conf
-echo 'env = XCURSOR_SIZE,24' >> ~/.config/hypr/hyprland.conf
 ```
 
-### Icon Theme (Papirus Nord)
+### Icon Theme (Papirus)
 ```bash
-# Icon Pack installieren
 yay -S papirus-icon-theme
-
-# GTK-Konfiguration aktualisieren
-sed -i 's/gtk-icon-theme-name=.*/gtk-icon-theme-name=Papirus-Dark/' ~/.config/gtk-3.0/settings.ini
 ```
 
-### Zsh & Starship (Erweiterte Shell)
+## Deinstallation
+
 ```bash
-# Zsh installieren
-sudo pacman -S zsh zsh-completions
-
-# Starship installieren
-curl -sS https://starship.rs/install.sh | sh
-
-# Konfiguration
-echo 'export ZSH=$HOME/.oh-my-zsh' >> ~/.zshrc
-echo 'ZSH_THEME="robbyrussell"' >> ~/.zshrc
-echo 'eval "$(starship init zsh)"' >> ~/.zshrc
+chmod +x uninstall.sh
+./uninstall.sh
 ```
 
-## 🔧 Konfiguration anpassen
+Das Uninstall-Script wird:
+- Laufende Prozesse stoppen
+- Konfigurationsdateien entfernen
+- Backup-Wiederherstellung anbieten
+- Optional Pakete entfernen
+- Cache bereinigen
 
-### Monitor-Setup
+## Tastenkombinationen
+
+### Basis-Steuerung
+| Taste | Aktion |
+|-------|--------|
+| `SUPER + Return` | Terminal |
+| `SUPER + Space` | App Launcher |
+| `SUPER + Q` | Fenster schließen |
+| `SUPER + 1-0` | Workspace wechseln |
+
+### AGS Glass UI
+| Taste | Aktion |
+|-------|--------|
+| `SUPER + CTRL + Space` | Quick Settings |
+| `SUPER + CTRL + D` | Mini Dashboard |
+| `SUPER + CTRL + N` | Notification Center |
+| `SUPER + CTRL + W` | Workspace Preview |
+| `SUPER + A` | Fullscreen Dashboard |
+
+### Visual Effects
+| Taste | Aktion |
+|-------|--------|
+| `SUPER + CTRL + V` | Audio Visualizer Toggle |
+| `SUPER + CTRL + X` | Dynamic Borders Toggle |
+| `SUPER + CTRL + G` | Screen Glow Toggle |
+| `SUPER + CTRL + S` | Snow Particles |
+| `SUPER + CTRL + A` | Aurora Particles |
+| `SUPER + CTRL + R` | Random Particles |
+
+## Fehlerbehebung
+
+### AGS startet nicht
 ```bash
-# In ~/.config/hypr/hyprland.conf bearbeiten:
-# Einzelner Monitor
-monitor=,preferred,auto,1
+# AGS neu installieren
+yay -S aylurs-gtk-shell
 
-# Dual-Monitor Beispiel
-monitor=DP-1,2560x1440@144,0x0,1
-monitor=HDMI-A-1,1920x1080@60,2560x0,1
+# Logs prüfen
+ags --help
 ```
 
-### Tastaturlayout ändern
+### Audio Visualizer funktioniert nicht
 ```bash
-# In ~/.config/hypr/hyprland.conf:
-input {
-    kb_layout = de  # de, us, fr, etc.
-    kb_variant =    # nodeadkeys, etc.
-}
+# Cava installieren
+yay -S cava
+
+# FIFO erstellen
+mkfifo /tmp/cava.fifo
+
+# Cava manuell starten
+cava -p ~/.config/cava/config &
 ```
 
-### Waybar-Module anpassen
+### Particle Effects funktionieren nicht
 ```bash
-# In ~/.config/waybar/config bearbeiten:
-# Module hinzufügen/entfernen nach Bedarf
-# Temperatur-Sensor anpassen für dein System
+# bc und jq installieren
+sudo pacman -S bc jq
 ```
 
-## 🧪 Installation testen
-
-### 1. Konfiguration validieren
+### Dynamic Borders funktionieren nicht
 ```bash
-hyprland --verify-config
+# jq installieren
+sudo pacman -S jq
+
+# Script manuell ausführen
+~/.config/scripts/dynamic-borders.sh start
 ```
 
-### 2. Einzelne Komponenten testen
-```bash
-# Waybar testen
-waybar
-
-# Wofi testen
-wofi --show drun
-
-# Kitty testen
-kitty
-
-# Dunst testen
-notify-send "Test" "Dunst funktioniert!"
-```
-
-### 3. Vollständigen Start testen
-```bash
-# Temporäre Session starten (in neuem TTY: Ctrl+Alt+F2)
-Hyprland
-```
-
-## 🔄 Updates & Maintenance
-
-### System aktualisieren
-```bash
-# Mit dem eingebauten Update-Script
-$mainMod + U  # Oder manuell:
-~/.config/waybar/scripts/update-system.sh
-```
+## Updates
 
 ### Konfiguration aktualisieren
 ```bash
 cd ~/hyprland-nord-rice
 git pull
-./install.sh  # Überschreibt Konfiguration
+./install.sh
 ```
 
-## 🆘 Fehlerbehebung
-
-### Hyprland startet nicht
+### System aktualisieren
 ```bash
-# Logs prüfen
-journalctl -b | grep hyprland
-
-# Minimal-Konfiguration testen
-hyprctl version
+# Über Waybar-Button oder:
+~/.config/waybar/scripts/update-system.sh
 ```
 
-### Waybar funktioniert nicht
-```bash
-# Dependencies prüfen
-pacman -Q waybar jq
-
-# Manuell starten
-killall waybar; waybar &
-```
-
-### Wofi zeigt keine Apps
-```bash
-# Desktop-Dateien aktualisieren
-update-desktop-database
-```
-
-## 📞 Support
+## Support
 
 Bei Problemen:
-1. **Dokumentation:** `$mainMod + H` → Troubleshooting
+1. **Dokumentation:** `SUPER + H` -> Troubleshooting
 2. **Logs prüfen:** `journalctl -b`
 3. **Community:** Hyprland Discord oder GitHub Issues
 
 ---
 
-**Viel Spaß mit deinem neuen Nord Rice! ❄️🚀**
-
-Für detaillierte Hilfe: `$mainMod + H` → Troubleshooting
+**Viel Spaß mit deinem Nord Rice - A Visual Masterpiece!**

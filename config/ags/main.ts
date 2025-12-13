@@ -17,6 +17,8 @@ import Overview from './windows/overview.js';
 import MiniDashboard from './windows/minidashboard.js';
 import Dashboard from './windows/dashboard.js';
 import Bar from './windows/bar.js';
+import WorkspacePreview from './windows/workspace-preview.js';
+import NotificationCenter from './windows/notification-center.js';
 
 // Import service modules for reactive updates
 import './services/audio.js';
@@ -38,6 +40,8 @@ App.config({
         MiniDashboard(),
         Dashboard(),
         Bar(),
+        WorkspacePreview(),
+        NotificationCenter(),
     ],
 });
 

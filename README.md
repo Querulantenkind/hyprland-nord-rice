@@ -1,6 +1,6 @@
 # Hyprland Nord Rice + AGS Glass UI
 
-An elegant Hyprland setup in [Nord Theme](https://www.nordtheme.com/) with **AGS Glass UI** overlays - minimalist, functional, and jaw-dropping aesthetic.
+An elegant Hyprland setup in [Nord Theme](https://www.nordtheme.com/) with **AGS Glass UI** overlays - a visual masterpiece with stunning animations, particle effects, and ambient features.
 
 ![Nord Theme](https://www.nordtheme.com/images/ports/visual-studio-code/editor-ui-jsx.png)
 
@@ -15,29 +15,51 @@ An elegant Hyprland setup in [Nord Theme](https://www.nordtheme.com/) with **AGS
 
 ## Included Configurations
 
-- **Hyprland** - Wayland compositor with animations and blur
-- **AGS Glass UI** - Nord/Ice Glass overlays (OSD, Quick Settings, Power Menu, Overview, Mini Dashboard)
-- **Waybar** - Status bar with workspaces, clock, battery, network, audio
+- **Hyprland** - Wayland compositor with animations, blur, and dynamic borders
+- **AGS Glass UI** - Nord/Ice Glass overlays (OSD, Quick Settings, Power Menu, Overview, Dashboard, Notification Center)
+- **Waybar** - Status bar with workspaces, clock, battery, network, audio, audio visualizer
 - **Wofi** - Application launcher in Nord style
 - **Hyprpaper** - Wallpaper manager
 - **Hyprlock** - Lockscreen in Nord design
+- **Hypridle** - Idle manager
+- **Dunst** - Notification daemon
+- **Kitty** - Terminal emulator
+- **Btop** - System monitor
+- **Cava** - Audio visualizer
 
 ## Features
 
-- Complete Nord color scheme
-- Blur effects and transparency
-- Smooth animations
-- **AGS Glass UI Overlays** - jaw-dropping Nord/Ice Glass effects
-- **Quick Settings** - Live Audio/Brightness/Network controls
-- **Mini Dashboard** - Compact Quick-Access panel with essential controls
-- **OSD Notifications** - Frosted Glass popups for media keys
-- **Power Menu** - Elegant system menu
-- **Workspace Overview** - Visual workspace management
+### Core Features
+- Complete Nord color scheme across all components
+- Blur effects and transparency (Glass-Morphism)
+- Smooth animations with custom Bezier curves
 - Multi-monitor support
-- German keyboard configuration
+- German keyboard configuration (easily changeable)
 - Integrated screenshot tools
 - Clipboard history (cliphist)
-- Elegant lockscreen
+
+### AGS Glass UI Overlays
+- **Quick Settings** - Live Audio/Brightness/Network controls
+- **Mini Dashboard** - Compact Quick-Access panel
+- **Fullscreen Dashboard** - GNOME/macOS inspired overview
+- **OSD Notifications** - Frosted Glass popups for media keys
+- **Power Menu** - Elegant system menu
+- **Workspace Overview** - Visual workspace management with previews
+- **Notification Center** - Grouped notifications with actions
+- **Ice Pill Window Indicator** - Floating window title bar
+
+### Visual Effects
+- **Audio Visualizer** - Cava-based music visualization in status bar
+- **Dynamic Borders** - Application-specific border colors with Aurora palette
+- **Workspace Indicator** - Animated workspace previews with window thumbnails
+- **Particle Effects** - Snowflakes, Aurora, Stars, Success bursts
+- **Screen-Edge Glow** - Ambient glow based on active application
+- **Window Shake** - Visual feedback for errors/warnings with border flash
+
+### Hyprbars Integration
+- Floating ice-block title bars
+- Nord/Frost themed buttons
+- Minimal and elegant design
 
 ## Installation
 
@@ -50,15 +72,24 @@ chmod +x install.sh
 ./install.sh
 ```
 
+The install script will automatically:
+- Detect your package manager (pacman/apt/dnf/zypper)
+- Install all required dependencies
+- Backup existing configurations
+- Install the Nord Rice configuration
+- Download Nord wallpapers
+- Optionally install Nordic GTK theme
+
 ### Manual
 
 1. Install required packages (Arch Linux):
 
 ```bash
-sudo pacman -S hyprland waybar wofi kitty thunar firefox dunst grim slurp wl-clipboard brightnessctl pavucontrol polkit-gnome gjs gtk3 libnotify sassc wireplumber playerctl bluez bluez-utils
+# Base packages
+sudo pacman -S hyprland waybar wofi kitty thunar firefox dunst grim slurp wl-clipboard brightnessctl pavucontrol polkit-gnome network-manager-applet zsh btop jq bc
 
-# AUR (with yay)
-yay -S hyprpaper hyprlock wlogout cliphist ttf-jetbrains-mono-nerd ags
+# AUR packages (with yay)
+yay -S hyprpaper hyprlock hypridle wlogout cliphist ttf-jetbrains-mono-nerd qt5ct xdg-desktop-portal-hyprland ags gjs gtk3 libnotify sassc wireplumber playerctl bluez bluez-utils cava
 ```
 
 2. Copy configuration files:
@@ -67,17 +98,37 @@ yay -S hyprpaper hyprlock wlogout cliphist ttf-jetbrains-mono-nerd ags
 cp -r config/hypr ~/.config/
 cp -r config/waybar ~/.config/
 cp -r config/wofi ~/.config/
+cp -r config/ags ~/.config/
+cp -r config/dunst ~/.config/
+cp -r config/kitty ~/.config/
+cp -r config/btop ~/.config/
+cp -r config/scripts ~/.config/
+cp -r config/cava ~/.config/
 ```
 
-3. Add a Nord wallpaper:
+3. Make scripts executable:
 
 ```bash
-mkdir -p ~/.config/hypr/wallpapers
-# Copy your wallpaper to ~/.config/hypr/wallpapers/nord-mountains.jpg
+chmod +x ~/.config/scripts/*.sh
+chmod +x ~/.config/waybar/scripts/*.sh
+chmod +x ~/.config/wofi/scripts/*.sh
 ```
+
+## Uninstallation
+
+```bash
+chmod +x uninstall.sh
+./uninstall.sh
+```
+
+The uninstall script will:
+- Remove all installed configurations
+- Optionally restore backed-up configurations
+- Optionally remove installed packages
 
 ## Keybindings
 
+### Basic Controls
 | Key | Action |
 |-----|--------|
 | `SUPER + Return` | Terminal (Kitty) |
@@ -95,13 +146,34 @@ mkdir -p ~/.config/hypr/wallpapers
 | `SUPER + CTRL + Arrow keys` | Resize window |
 | `SUPER + S` | Scratchpad (Special workspace) |
 | `SUPER + Escape` | Lock screen |
-| `SUPER + CTRL + Space` | **AGS Quick Settings** |
-| `SUPER + CTRL + D` | **AGS Mini Dashboard** |
-| `SUPER + CTRL + P` | **AGS Power Menu** |
-| `SUPER + CTRL + O` | **AGS Overview** |
-| `Power Button (Right Click)` | **Mini Dashboard** |
 | `Print` | Screenshot (select area) |
 | `SHIFT + Print` | Screenshot (full screen) |
+
+### AGS Glass UI Controls
+| Key | Action |
+|-----|--------|
+| `SUPER + CTRL + Space` | Quick Settings |
+| `SUPER + CTRL + D` | Mini Dashboard |
+| `SUPER + CTRL + P` | Power Menu |
+| `SUPER + CTRL + O` | Overview |
+| `SUPER + CTRL + B` | Toggle AGS Bar |
+| `SUPER + CTRL + W` | Workspace Preview |
+| `SUPER + CTRL + N` | Notification Center |
+| `SUPER + A` | Fullscreen Dashboard |
+
+### Visual Effects Controls
+| Key | Action |
+|-----|--------|
+| `SUPER + CTRL + V` | Toggle Audio Visualizer |
+| `SUPER + CTRL + X` | Toggle Dynamic Borders |
+| `SUPER + CTRL + G` | Toggle Screen Glow |
+| `SUPER + CTRL + S` | Snow Particle Effect |
+| `SUPER + CTRL + A` | Aurora Particle Effect |
+| `SUPER + CTRL + T` | Stars Particle Effect |
+| `SUPER + CTRL + U` | Success Particle Burst |
+| `SUPER + CTRL + R` | Random Particle Effect |
+| `SUPER + CTRL + E` | Error Window Shake |
+| `SUPER + CTRL + I` | Info Window Shake |
 
 ## Structure
 
@@ -109,21 +181,55 @@ mkdir -p ~/.config/hypr/wallpapers
 hyprland-rice/
 ├── config/
 │   ├── ags/
-│   │   ├── main.ts          # AGS Entry Point
-│   │   ├── style.scss       # Nord/Ice Glass Theme
-│   │   ├── widgets/         # Modular UI Components
-│   │   └── windows/         # LayerShell Windows
+│   │   ├── main.ts              # AGS Entry Point
+│   │   ├── style.scss           # Nord/Ice Glass Theme
+│   │   ├── services/            # System services (audio, network, etc.)
+│   │   ├── widgets/             # Modular UI Components
+│   │   │   ├── audio-visualizer.js
+│   │   │   ├── notification.js
+│   │   │   ├── window.js
+│   │   │   ├── workspace-indicator.js
+│   │   │   └── ...
+│   │   └── windows/             # LayerShell Windows
+│   │       ├── bar.js
+│   │       ├── dashboard.js
+│   │       ├── notification-center.js
+│   │       ├── workspace-preview.js
+│   │       └── ...
+│   ├── btop/
+│   │   └── btop.conf            # Btop configuration
+│   ├── cava/
+│   │   └── config               # Cava audio visualizer config
+│   ├── dunst/
+│   │   └── dunstrc              # Notification styling
 │   ├── hypr/
-│   │   ├── hyprland.conf    # Main configuration
-│   │   ├── hyprpaper.conf   # Wallpaper config
-│   │   └── hyprlock.conf    # Lockscreen config
+│   │   ├── hyprland.conf        # Main configuration
+│   │   ├── hyprpaper.conf       # Wallpaper config
+│   │   ├── hyprlock.conf        # Lockscreen config
+│   │   └── wallpapers/          # Nord wallpapers
+│   ├── hypridle/
+│   │   └── config.toml          # Idle manager config
+│   ├── kitty/
+│   │   └── kitty.conf           # Terminal config
+│   ├── scripts/
+│   │   ├── dynamic-borders.sh   # Dynamic border colors
+│   │   ├── particle-effects.sh  # Particle animations
+│   │   ├── screen-glow.sh       # Ambient glow effects
+│   │   ├── window-shake.sh      # Window shake animations
+│   │   └── ...
 │   ├── waybar/
-│   │   ├── config           # Waybar modules
-│   │   └── style.css        # Waybar styling
+│   │   ├── config               # Waybar modules
+│   │   ├── style.css            # Waybar styling
+│   │   └── scripts/
+│   │       ├── audio-visualizer.sh
+│   │       └── ...
+│   ├── wlogout/
+│   │   └── config               # Logout menu config
 │   └── wofi/
-│       ├── config           # Wofi settings
-│       └── style.css        # Wofi styling
-├── install.sh               # Installation script
+│       ├── config               # Wofi settings
+│       └── style.css            # Wofi styling
+├── install.sh                   # Installation script
+├── uninstall.sh                 # Uninstallation script
 └── README.md
 ```
 
@@ -159,6 +265,23 @@ input {
 }
 ```
 
+### Configure Dynamic Borders
+
+Edit the color mappings in `~/.config/scripts/dynamic-borders.sh`:
+
+```bash
+# Add custom application colors
+["your-app"]="rgb($NORD15) rgb($NORD14) 45deg"
+```
+
+### Configure Particle Effects
+
+```bash
+# Customize particle duration and intensity
+~/.config/scripts/particle-effects.sh snow 20      # 20 second snow
+~/.config/scripts/particle-effects.sh aurora 15   # 15 second aurora
+```
+
 ## Recommended Additions
 
 - [Nordic GTK Theme](https://github.com/EliverLara/Nordic)
@@ -179,6 +302,43 @@ Make sure your GPU supports Vulkan and the drivers are installed.
 ### Wallpaper not displayed
 Check if `hyprpaper` is running and the wallpaper path is correct.
 
+### AGS not working
+Make sure AGS is installed from AUR:
+```bash
+yay -S aylurs-gtk-shell
+```
+
+### Audio visualizer not showing
+Install cava and create the FIFO:
+```bash
+yay -S cava
+mkfifo /tmp/cava.fifo
+cava -p ~/.config/cava/config &
+```
+
+### Particle effects not working
+Ensure `bc` and `jq` are installed:
+```bash
+sudo pacman -S bc jq
+```
+
+## Dependencies
+
+### Required Packages
+- hyprland, waybar, wofi, kitty, thunar, firefox
+- dunst, grim, slurp, wl-clipboard, brightnessctl
+- pavucontrol, polkit-gnome, network-manager-applet
+- jq, bc (for scripts)
+
+### AUR Packages (Arch Linux)
+- hyprpaper, hyprlock, hypridle, wlogout
+- cliphist, ttf-jetbrains-mono-nerd, qt5ct
+- xdg-desktop-portal-hyprland
+- aylurs-gtk-shell (AGS)
+- cava (audio visualizer)
+- gjs, gtk3, libnotify, sassc
+- wireplumber, playerctl, bluez, bluez-utils
+
 ## License
 
 MIT License - Free to use and modify.
@@ -187,8 +347,10 @@ MIT License - Free to use and modify.
 
 - [Nord Theme](https://www.nordtheme.com/) - The beautiful color palette
 - [Hyprland](https://hyprland.org/) - The fantastic Wayland compositor
+- [AGS](https://github.com/Aylur/ags) - Amazing GTK Shell for custom widgets
+- [Cava](https://github.com/karlstav/cava) - Console-based Audio Visualizer
 - Community for inspiration and support
 
 ---
 
-**Enjoy your Nord Rice!**
+**Enjoy your Nord Rice - A Visual Masterpiece!**

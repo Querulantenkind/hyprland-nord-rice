@@ -1,8 +1,8 @@
-# ✨ Hyprland Nord Rice - Features Übersicht
+# Hyprland Nord Rice - Features Übersicht
 
 ## Übersicht
 
-Das Hyprland Nord Rice ist ein vollständig integriertes Desktop-Environment mit modernen Features, eleganter Ästhetik und hoher Funktionalität.
+Das Hyprland Nord Rice ist ein visuelles Meisterwerk - ein vollständig integriertes Desktop-Environment mit modernen Features, eleganter Ästhetik, visuellen Effekten und hoher Funktionalität.
 
 ## 🎨 Nord Theme System
 
@@ -226,7 +226,70 @@ Das Fullscreen Dashboard ist ein GNOME/macOS-inspiriertes Overlay, das per `SUPE
 - **Custom Scripts:** Erweiterte System-Informationen
 - **Alert System:** Kritische Werte hervorheben
 
-## 🎪 Easter Eggs & Fun Features
+## Visual Effects Suite
+
+### Audio Visualizer
+- **Cava Integration:** Console-based Audio Visualizer
+- **Waybar Widget:** Musik-Visualisierung direkt in der Statusleiste
+- **AGS Widget:** Kompakte Visualisierung im Glass-Design
+- **Nord Gradient:** Frost-Farben (Nord8/Nord9) für Bars
+- **Toggle:** `SUPER + CTRL + V`
+
+### Dynamic Borders
+- **Application-specific:** Jede App bekommt eigene Border-Farben
+- **Aurora Palette:** Firefox (Orange), Code (Blau), Terminal (Cyan)
+- **Floating Indicator:** Rote Borders für schwebende Fenster
+- **Urgent Flash:** Gelb/Rot Flash für dringende Fenster
+- **Toggle:** `SUPER + CTRL + X`
+
+### Particle Effects
+- **Snow:** Schneeflocken in Nord-Farben
+- **Aurora:** Aurora Borealis Wellen-Effekt
+- **Stars:** Twinkling Sternfeld
+- **Success:** Konfetti-Burst bei Erfolg
+- **Keybindings:**
+  - `SUPER + CTRL + S` - Snow
+  - `SUPER + CTRL + A` - Aurora
+  - `SUPER + CTRL + T` - Stars
+  - `SUPER + CTRL + U` - Success
+  - `SUPER + CTRL + R` - Random
+
+### Screen Glow
+- **Ambient Glow:** Subtiler Glow basierend auf aktiver App
+- **Workspace Colors:** Farbwechsel je nach Workspace
+- **Notification Pulse:** Pulsieren bei Benachrichtigungen
+- **Toggle:** `SUPER + CTRL + G`
+
+### Window Shake
+- **Error Shake:** Rotes Schütteln mit Border-Flash
+- **Warning Shake:** Gelbes Schütteln für Warnungen
+- **Success Shake:** Grünes Schütteln für Erfolg
+- **Info Shake:** Blaues Schütteln für Info
+- **Keybindings:**
+  - `SUPER + CTRL + E` - Error
+  - `SUPER + CTRL + I` - Info
+
+### AGS Ice Pill Bar
+- **Window Indicator:** Zeigt aktives Fenster als schwebende Eispille
+- **App Icons:** Emoji-Icons für verschiedene Anwendungen
+- **Workspace Badge:** Zeigt aktiven Workspace
+- **Glass Design:** Nord/Ice Glass-Morphism Effekt
+
+### Workspace Preview
+- **Grid Layout:** Alle 10 Workspaces auf einen Blick
+- **Window Thumbnails:** Miniaturansichten der Fenster
+- **Quick Switch:** Klicken zum Wechseln
+- **Toggle:** `SUPER + CTRL + W`
+
+### Notification Center
+- **AGS-basiert:** Glass-Morphism Design
+- **Slide-in Animation:** Sanfte Übergänge
+- **Gruppierung:** Notifications nach App gruppiert
+- **Action Buttons:** Interaktive Buttons in Notifications
+- **Do Not Disturb:** DND-Toggle
+- **Toggle:** `SUPER + CTRL + N`
+
+## Easter Eggs & Fun Features
 
 ### Matrix Rain
 - **Terminal Animation:** Klassische Matrix-Effekte
