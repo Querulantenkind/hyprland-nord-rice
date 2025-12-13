@@ -16,6 +16,7 @@ import PowerMenu from './windows/powermenu.js';
 import Overview from './windows/overview.js';
 import MiniDashboard from './windows/minidashboard.js';
 import Dashboard from './windows/dashboard.js';
+import Bar from './windows/bar.js';
 
 // Import service modules for reactive updates
 import './services/audio.js';
@@ -36,6 +37,7 @@ App.config({
         Overview(),
         MiniDashboard(),
         Dashboard(),
+        Bar(),
     ],
 });
 

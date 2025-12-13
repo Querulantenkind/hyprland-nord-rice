@@ -1269,11 +1269,84 @@ window.dashboard {
     .dashboard-body {
         flex-direction: column;
     }
-    
+
     .dashboard-sidebar {
         min-width: 100%;
         max-width: 100%;
         flex-direction: row;
         flex-wrap: wrap;
     }
+}
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// BAR WINDOW STYLES
+// ═══════════════════════════════════════════════════════════════════════════════
+
+window.bar {
+    background: transparent;
+    border-radius: 20px;
+    margin: 0;
+    padding: 0;
+    height: 40px;
+}
+
+.bar-content {
+    padding: 5px 15px;
+}
+
+.bar-left,
+.bar-right {
+    gap: 10px;
+}
+
+// Ice Pill Window Indicator
+.window-pill {
+    @include glass;
+    border-radius: 20px;
+    padding: 5px 15px;
+    margin: 0 10px;
+    gap: 8px;
+    box-shadow:
+        0 4px 16px rgba($nord0, 0.3),
+        inset 0 1px 0 rgba($nord6, 0.1);
+
+    &:hover {
+        @include glass-hover;
+        box-shadow:
+            0 6px 24px rgba($nord0, 0.4),
+            inset 0 1px 0 rgba($nord6, 0.15),
+            0 0 20px rgba($nord8, 0.1);
+    }
+}
+
+.window-icon {
+    font-size: 14px;
+    color: $nord8;
+    min-width: 16px;
+    text-align: center;
+}
+
+.window-title {
+    font-size: 12px;
+    font-weight: 500;
+    color: $nord4;
+    font-family: 'JetBrains Mono', monospace;
+    max-width: 200px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+
+    &:empty::before {
+        content: 'Desktop';
+        color: $nord3;
+    }
+}
+
+.window-workspace {
+    font-size: 10px;
+    color: $nord9;
+    background: rgba($nord9, 0.1);
+    padding: 2px 6px;
+    border-radius: 8px;
+    font-weight: 600;
+    border: 1px solid rgba($nord9, 0.3);
 }
