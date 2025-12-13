@@ -1,0 +1,139 @@
+/* ╔═══════════════════════════════════════════════════════════════════════════╗
+   ║                      WLOGOUT STYLE - NORD THEME                           ║
+   ╚═══════════════════════════════════════════════════════════════════════════╝ */
+
+@import url("font-awesome.css");
+
+/* Nord Colors */
+@nord0: #2e3440;
+@nord1: #3b4252;
+@nord2: #434c5e;
+@nord3: #4c566a;
+@nord4: #d8dee9;
+@nord5: #e5e9f0;
+@nord6: #eceff4;
+@nord7: #8fbcbb;
+@nord8: #88c0d0;
+@nord9: #81a1c1;
+@nord10: #5e81ac;
+@nord11: #bf616a;
+@nord12: #d08770;
+@nord13: #ebcb8b;
+@nord14: #a3be8c;
+@nord15: #b48ead;
+
+/* Global */
+* {
+    font-family: "JetBrains Mono Nerd Font", "JetBrains Mono", monospace;
+    font-size: 14px;
+    transition: all 0.3s ease;
+}
+
+/* Window */
+window {
+    background-color: rgba(46, 52, 64, 0.95);
+    border-radius: 15px;
+    border: 2px solid @nord3;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+}
+
+/* Buttons */
+button {
+    background-color: @nord1;
+    color: @nord4;
+    border: 2px solid @nord3;
+    border-radius: 50px;
+    margin: 10px;
+    padding: 20px;
+    min-width: 80px;
+    min-height: 80px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    transition: all 0.3s ease;
+}
+
+button:hover {
+    background-color: @nord8;
+    color: @nord0;
+    border-color: @nord9;
+    transform: scale(1.1);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
+}
+
+button:active {
+    background-color: @nord9;
+    transform: scale(0.95);
+}
+
+/* Specific button styles */
+.shutdown {
+    border-color: @nord11;
+}
+
+.shutdown:hover {
+    background-color: @nord11;
+    color: @nord6;
+}
+
+.reboot {
+    border-color: @nord13;
+}
+
+.reboot:hover {
+    background-color: @nord13;
+    color: @nord0;
+}
+
+.logout {
+    border-color: @nord10;
+}
+
+.logout:hover {
+    background-color: @nord10;
+    color: @nord6;
+}
+
+.suspend {
+    border-color: @nord9;
+}
+
+.suspend:hover {
+    background-color: @nord9;
+    color: @nord0;
+}
+
+.hibernate {
+    border-color: @nord15;
+}
+
+.hibernate:hover {
+    background-color: @nord15;
+    color: @nord0;
+}
+
+.lock {
+    border-color: @nord7;
+}
+
+.lock:hover {
+    background-color: @nord7;
+    color: @nord0;
+}
+
+/* Tooltip */
+tooltip {
+    background-color: @nord0;
+    color: @nord4;
+    border: 1px solid @nord3;
+    border-radius: 8px;
+    padding: 5px 10px;
+    font-size: 12px;
+}
+
+/* Grid layout */
+#container {
+    margin: 20px;
+}
+
+#grid {
+    spacing: 10px;
+}

@@ -1,0 +1,94 @@
+# Nord Ice Theme for btop - Comprehensive
+# Ein umfangreiches Nord Theme mit Ice Farbschema
+# Verwendet kalte, blaue Nord-Farben für ein elegantes Erscheinungsbild
+
+# All graphs and meters can be gradients
+# For single color graphs leave "grad1" empty
+# For more exact control over colors use a value between 0-255 for 24-bit color
+# Or single numbers -15 to 5 for the default 16 colors
+# Example: grad1=#ebcb8b grad2=#bf616a
+# Or: grad1=3 grad2=7
+
+# ===== HAUPTFARBEN =====
+theme[main_bg] = "#2e3440"        # Nord0 - Haupt-Hintergrund
+theme[main_fg] = "#eceff4"        # Nord6 - Haupt-Text (heller für bessere Lesbarkeit)
+theme[title] = "#88c0d0"          # Nord8 - Titel (helles Blau)
+theme[hi_fg] = "#8fbcbb"          # Nord7 - Hervorgehobener Text (Cyan)
+theme[selected_bg] = "#434c5e"    # Nord2 - Ausgewählter Hintergrund
+theme[selected_fg] = "#eceff4"    # Nord6 - Ausgewählter Text
+theme[inactive_fg] = "#4c566a"    # Nord3 - Inaktiver Text
+theme[proc_misc] = "#81a1c1"      # Nord9 - Verschiedene Prozess-Elemente
+
+# ===== BOXEN =====
+theme[cpu_box] = "#3b4252"        # Nord1 - CPU Box (dunkler als andere)
+theme[mem_box] = "#434c5e"        # Nord2 - Memory Box
+theme[net_box] = "#434c5e"        # Nord2 - Network Box
+theme[proc_box] = "#434c5e"       # Nord2 - Process Box
+theme[div_line] = "#4c566a"       # Nord3 - Trennlinien
+
+# ===== TEMPERATUR (Kalt zu Warm Gradient) =====
+theme[temp_start] = "#81a1c1"     # Nord9 - Kalt (Blau)
+theme[temp_mid] = "#ebcb8b"       # Nord13 - Mittel (Gelb)
+theme[temp_end] = "#bf616a"       # Nord11 - Heiß (Rot)
+
+# ===== CPU AUSLASTUNG (Ice Gradient) =====
+theme[cpu_start] = "#5e81ac"      # Nord10 - Niedrig (dunkles Blau)
+theme[cpu_mid] = "#88c0d0"        # Nord8 - Mittel (helles Blau)
+theme[cpu_end] = "#8fbcbb"        # Nord7 - Hoch (Cyan)
+
+# ===== SPEICHER - FREI (Grün Gradient) =====
+theme[free_start] = "#a3be8c"     # Nord14 - Grün
+theme[free_mid] = "#ebcb8b"       # Nord13 - Gelb
+theme[free_end] = "#d08770"       # Nord12 - Orange
+
+# ===== SPEICHER - CACHED (Ice Gradient) =====
+theme[cached_start] = "#81a1c1"   # Nord9 - Blau
+theme[cached_mid] = "#88c0d0"     # Nord8 - Hellblau
+theme[cached_end] = "#8fbcbb"     # Nord7 - Cyan
+
+# ===== SPEICHER - VERFÜGBAR (Blau Gradient) =====
+theme[available_start] = "#5e81ac" # Nord10 - Dunkelblau
+theme[available_mid] = "#81a1c1"   # Nord9 - Blau
+theme[available_end] = "#88c0d0"   # Nord8 - Hellblau
+
+# ===== SPEICHER - VERWENDET (Rot Gradient) =====
+theme[used_start] = "#bf616a"     # Nord11 - Rot
+theme[used_mid] = "#d08770"       # Nord12 - Orange
+theme[used_end] = "#ebcb8b"       # Nord13 - Gelb
+
+# ===== NETZWERK - DOWNLOAD (Grün Gradient) =====
+theme[download_start] = "#a3be8c" # Nord14 - Grün
+theme[download_mid] = "#ebcb8b"   # Nord13 - Gelb
+theme[download_end] = "#d08770"   # Nord12 - Orange
+
+# ===== NETZWERK - UPLOAD (Ice Gradient) =====
+theme[upload_start] = "#81a1c1"   # Nord9 - Blau
+theme[upload_mid] = "#88c0d0"     # Nord8 - Hellblau
+theme[upload_end] = "#8fbcbb"     # Nord7 - Cyan
+
+# ===== PROZESSE (Ice Gradient) =====
+theme[process_start] = "#5e81ac"  # Nord10 - Dunkelblau
+theme[process_mid] = "#81a1c1"    # Nord9 - Blau
+theme[process_end] = "#88c0d0"    # Nord8 - Hellblau
+
+# ===== ZUSÄTZLICHE ELEMENTE FÜR UMFANGREICHES THEME =====
+theme[graph_text] = "#d8dee9"     # Nord4 - Graph Text
+theme[meter_bg] = "#2e3440"       # Nord0 - Meter Hintergrund
+theme[meter_fg] = "#eceff4"       # Nord6 - Meter Vordergrund
+theme[graph_bg] = "#2e3440"       # Nord0 - Graph Hintergrund
+theme[graph_fg] = "#88c0d0"       # Nord8 - Graph Vordergrund
+theme[border_bg] = "#2e3440"      # Nord0 - Rahmen Hintergrund
+theme[border_fg] = "#4c566a"      # Nord3 - Rahmen Vordergrund
+
+# ===== STATUS INDIKATOREN =====
+theme[status_good] = "#a3be8c"    # Nord14 - Gut (Grün)
+theme[status_warning] = "#ebcb8b" # Nord13 - Warnung (Gelb)
+theme[status_error] = "#bf616a"   # Nord11 - Fehler (Rot)
+theme[status_info] = "#81a1c1"    # Nord9 - Info (Blau)
+
+# ===== SPEZIALFÄRBEN =====
+theme[separator] = "#4c566a"      # Nord3 - Separatoren
+theme[highlight] = "#88c0d0"      # Nord8 - Hervorhebungen
+theme[notification] = "#ebcb8b"   # Nord13 - Benachrichtigungen
+theme[warning] = "#d08770"        # Nord12 - Warnungen
+theme[critical] = "#bf616a"       # Nord11 - Kritisch

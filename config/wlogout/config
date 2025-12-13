@@ -1,0 +1,78 @@
+# ╔═══════════════════════════════════════════════════════════════════════════╗
+# ║                     WLOGOUT CONFIG - NORD THEME                         ║
+# ╚═══════════════════════════════════════════════════════════════════════════╝
+
+# Nord Colors
+$nord0 = #2e3440
+$nord1 = #3b4252
+$nord2 = #434c5e
+$nord3 = #4c566a
+$nord4 = #d8dee9
+$nord5 = #e5e9f0
+$nord6 = #eceff4
+$nord7 = #8fbcbb
+$nord8 = #88c0d0
+$nord9 = #81a1c1
+$nord10 = #5e81ac
+$nord11 = #bf616a
+$nord12 = #d08770
+$nord13 = #ebcb8b
+$nord14 = #a3be8c
+$nord15 = #b48ead
+
+# Layout
+layout = center
+
+# Buttons
+buttons_per_row = 6
+button_radius = 50
+button_spacing = 10
+button_margin = 10
+
+# Background
+background_color = $nord0
+background_alpha = 0.9
+
+# Button colors
+button_color = $nord1
+button_hover_color = $nord8
+button_active_color = $nord9
+button_text_color = $nord4
+button_hover_text_color = $nord0
+
+# Button actions
+[button:shutdown]
+action = systemctl poweroff
+text = ⏻
+tooltip = Shutdown
+css_class = shutdown
+
+[button:reboot]
+action = systemctl reboot
+text = 󰜉
+tooltip = Reboot
+css_class = reboot
+
+[button:logout]
+action = hyprctl dispatch exit
+text = 󰍃
+tooltip = Logout
+css_class = logout
+
+[button:suspend]
+action = systemctl suspend
+text = 󰤄
+tooltip = Suspend
+css_class = suspend
+
+[button:hibernate]
+action = systemctl hibernate
+text = 󰋊
+tooltip = Hibernate
+css_class = hibernate
+
+[button:lock]
+action = hyprlock
+text = 󰍁
+tooltip = Lock
+css_class = lock

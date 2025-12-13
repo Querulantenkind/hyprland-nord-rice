@@ -1,0 +1,250 @@
+/* ╔═══════════════════════════════════════════════════════════════════════════╗
+   ║                      WAYBAR STYLE - NORD THEME                            ║
+   ╚═══════════════════════════════════════════════════════════════════════════╝ */
+
+/* Nord Colors */
+@define-color nord0 #2e3440;
+@define-color nord1 #3b4252;
+@define-color nord2 #434c5e;
+@define-color nord3 #4c566a;
+@define-color nord4 #d8dee9;
+@define-color nord5 #e5e9f0;
+@define-color nord6 #eceff4;
+@define-color nord7 #8fbcbb;
+@define-color nord8 #88c0d0;
+@define-color nord9 #81a1c1;
+@define-color nord10 #5e81ac;
+@define-color nord11 #bf616a;
+@define-color nord12 #d08770;
+@define-color nord13 #ebcb8b;
+@define-color nord14 #a3be8c;
+@define-color nord15 #b48ead;
+
+/* Global */
+* {
+    border: none;
+    border-radius: 0;
+    font-family: "JetBrains Mono Nerd Font", "JetBrains Mono", monospace;
+    font-size: 13px;
+    min-height: 0;
+}
+
+window#waybar {
+    background: transparent;
+    color: @nord4;
+}
+
+window#waybar.hidden {
+    opacity: 0.2;
+}
+
+/* Tooltip */
+tooltip {
+    background: @nord0;
+    border: 2px solid @nord3;
+    border-radius: 10px;
+}
+
+tooltip label {
+    color: @nord4;
+    padding: 5px;
+}
+
+/* Modules Container */
+#workspaces,
+#window,
+#clock,
+#tray,
+#cpu,
+#memory,
+#temperature,
+#pulseaudio,
+#network,
+#battery,
+#custom-updates,
+#custom-weather,
+#custom-power {
+    background: @nord0;
+    padding: 0 15px;
+    margin: 3px 3px;
+    border-radius: 10px;
+}
+
+/* Workspaces */
+#workspaces {
+    padding: 0 5px;
+}
+
+#workspaces button {
+    padding: 0 8px;
+    color: @nord3;
+    background: transparent;
+    border-radius: 8px;
+    margin: 3px 2px;
+    transition: all 0.3s ease;
+}
+
+#workspaces button:hover {
+    color: @nord8;
+    background: @nord1;
+}
+
+#workspaces button.active {
+    color: @nord0;
+    background: linear-gradient(45deg, @nord8, @nord9);
+}
+
+#workspaces button.urgent {
+    color: @nord6;
+    background: @nord11;
+}
+
+/* Window */
+#window {
+    color: @nord4;
+    font-weight: 500;
+}
+
+/* Clock */
+#clock {
+    color: @nord8;
+    font-weight: bold;
+    background: linear-gradient(180deg, @nord0, @nord1);
+    border: 1px solid @nord3;
+}
+
+/* Tray */
+#tray {
+    padding: 0 10px;
+}
+
+#tray > .passive {
+    -gtk-icon-effect: dim;
+}
+
+#tray > .needs-attention {
+    -gtk-icon-effect: highlight;
+    background-color: @nord11;
+}
+
+/* Pulseaudio */
+#pulseaudio {
+    color: @nord7;
+}
+
+#pulseaudio.muted {
+    color: @nord11;
+    background: @nord1;
+}
+
+/* Network */
+#network {
+    color: @nord14;
+}
+
+#network.disconnected {
+    color: @nord11;
+}
+
+/* Battery */
+#battery {
+    color: @nord14;
+}
+
+#battery.charging {
+    color: @nord13;
+}
+
+#battery.warning:not(.charging) {
+    color: @nord12;
+}
+
+#battery.critical:not(.charging) {
+    color: @nord0;
+    background: @nord11;
+    animation: blink 0.5s linear infinite alternate;
+}
+
+@keyframes blink {
+    to {
+        background: @nord0;
+        color: @nord11;
+    }
+}
+
+/* CPU */
+#cpu {
+    color: @nord13;
+}
+
+/* Memory */
+#memory {
+    color: @nord9;
+}
+
+/* Temperature */
+#temperature {
+    color: @nord7;
+}
+
+#temperature.critical {
+    color: @nord0;
+    background: @nord11;
+    animation: blink 0.5s linear infinite alternate;
+}
+
+/* Updates */
+#custom-updates {
+    color: @nord14;
+    padding: 0 10px;
+}
+
+#custom-updates.updates-available {
+    color: @nord0;
+    background: @nord13;
+    animation: pulse 2s ease-in-out infinite alternate;
+}
+
+@keyframes pulse {
+    to {
+        background: @nord12;
+    }
+}
+
+/* Weather */
+#custom-weather {
+    color: @nord8;
+    padding: 0 12px;
+}
+
+/* Power */
+#custom-power {
+    color: @nord11;
+    padding: 0 12px;
+    margin-right: 5px;
+}
+
+#custom-power:hover {
+    background: @nord11;
+    color: @nord0;
+}
+
+/* Left modules styling */
+#workspaces,
+#window {
+    margin-left: 5px;
+}
+
+/* Right modules styling */
+#tray,
+#cpu,
+#memory,
+#temperature,
+#pulseaudio,
+#network,
+#battery,
+#custom-updates,
+#custom-weather,
+#custom-power {
+    margin-right: 3px;
+}

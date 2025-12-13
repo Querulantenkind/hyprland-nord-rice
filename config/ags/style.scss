@@ -1,0 +1,520 @@
+// ╔═══════════════════════════════════════════════════════════════════════════╗
+// ║                     AGS STYLE - NORD/ICE GLASS THEME                      ║
+// ╚═══════════════════════════════════════════════════════════════════════════╝
+
+// Nord Color Palette (matching hyprland.conf)
+$nord0: #2e3440;   // Polar Night - darkest
+$nord1: #3b4252;   // Polar Night
+$nord2: #434c5e;   // Polar Night
+$nord3: #4c566a;   // Polar Night - lightest
+$nord4: #d8dee9;   // Snow Storm
+$nord5: #e5e9f0;   // Snow Storm
+$nord6: #eceff4;   // Snow Storm - lightest
+$nord7: #8fbcbb;   // Frost - cyan
+$nord8: #88c0d0;   // Frost - bright cyan (primary accent)
+$nord9: #81a1c1;   // Frost - blue
+$nord10: #5e81ac;  // Frost - dark blue
+$nord11: #bf616a;  // Aurora - red
+$nord12: #d08770;  // Aurora - orange
+$nord13: #ebcb8b;  // Aurora - yellow
+$nord14: #a3be8c;  // Aurora - green
+$nord15: #b48ead;  // Aurora - purple
+
+// Glass effect mixins
+@mixin glass {
+    background: rgba($nord1, 0.85);
+    backdrop-filter: blur(20px) saturate(180%);
+    border: 1px solid rgba($nord6, 0.2);
+    box-shadow:
+        0 8px 32px rgba($nord0, 0.3),
+        inset 0 1px 0 rgba($nord6, 0.1);
+}
+
+@mixin glass-hover {
+    background: rgba($nord2, 0.9);
+    border: 1px solid rgba($nord8, 0.3);
+    box-shadow:
+        0 12px 40px rgba($nord0, 0.4),
+        inset 0 1px 0 rgba($nord6, 0.15),
+        0 0 20px rgba($nord8, 0.1);
+}
+
+@mixin frost-accent {
+    background: linear-gradient(135deg,
+        rgba($nord8, 0.2) 0%,
+        rgba($nord9, 0.1) 50%,
+        rgba($nord7, 0.2) 100%
+    );
+    border: 1px solid rgba($nord8, 0.4);
+    box-shadow:
+        0 4px 16px rgba($nord8, 0.2),
+        inset 0 1px 0 rgba($nord6, 0.3);
+}
+
+// Global styles
+* {
+    font-family: 'JetBrains Mono', 'Fira Code', monospace;
+    font-size: 13px;
+    font-weight: 400;
+    color: $nord4;
+    transition: all 200ms cubic-bezier(0.25, 0.1, 0.25, 1);
+}
+
+// Window base styles (LayerShell)
+window {
+    @include glass;
+    border-radius: 16px;
+    margin: 8px;
+    padding: 0;
+
+    &.osd {
+        border-radius: 12px;
+        margin: 16px;
+        min-width: 300px;
+        min-height: 60px;
+    }
+
+    &.quicksettings {
+        border-radius: 20px;
+        margin: 0;
+        padding: 24px;
+        min-width: 400px;
+        max-width: 500px;
+    }
+
+    &.powermenu {
+        border-radius: 24px;
+        margin: 0;
+        padding: 32px;
+        min-width: 350px;
+    }
+
+    &.overview {
+        border-radius: 16px;
+        margin: 16px;
+        padding: 20px;
+        min-width: 600px;
+        min-height: 400px;
+    }
+
+    &.minidashboard {
+        border-radius: 16px;
+        margin: 0;
+        padding: 20px;
+        min-width: 320px;
+        max-width: 400px;
+        box-shadow:
+            0 12px 48px rgba($nord0, 0.4),
+            inset 0 1px 0 rgba($nord6, 0.1);
+    }
+}
+
+// Button styles
+button {
+    @include glass;
+    border-radius: 8px;
+    border: none;
+    padding: 8px 16px;
+    margin: 4px;
+    background: transparent;
+    color: $nord4;
+    font-weight: 500;
+
+    &:hover {
+        @include glass-hover;
+        color: $nord6;
+    }
+
+    &:active, &.active {
+        @include frost-accent;
+        color: $nord6;
+        transform: scale(0.98);
+    }
+
+    &.primary {
+        @include frost-accent;
+        color: $nord6;
+        font-weight: 600;
+
+        &:hover {
+            background: linear-gradient(135deg,
+                rgba($nord8, 0.3) 0%,
+                rgba($nord9, 0.2) 50%,
+                rgba($nord7, 0.3) 100%
+            );
+            box-shadow: 0 6px 24px rgba($nord8, 0.3);
+        }
+    }
+
+    &.destructive {
+        background: rgba($nord11, 0.2);
+        border: 1px solid rgba($nord11, 0.4);
+        color: $nord11;
+
+        &:hover {
+            background: rgba($nord11, 0.3);
+            box-shadow: 0 4px 16px rgba($nord11, 0.2);
+        }
+    }
+}
+
+// Slider styles
+slider {
+    @include glass;
+    border-radius: 4px;
+    min-height: 6px;
+
+    trough {
+        background: rgba($nord3, 0.5);
+        border-radius: 3px;
+        min-height: 6px;
+
+        highlight {
+            background: linear-gradient(90deg, $nord8, $nord9);
+            border-radius: 3px;
+            box-shadow: 0 0 8px rgba($nord8, 0.4);
+        }
+    }
+
+    slider {
+        background: $nord6;
+        border: 2px solid $nord8;
+        border-radius: 50%;
+        min-width: 20px;
+        min-height: 20px;
+        box-shadow: 0 2px 8px rgba($nord0, 0.3);
+
+        &:hover {
+            background: $nord5;
+            border-color: $nord7;
+            box-shadow: 0 4px 12px rgba($nord8, 0.3);
+        }
+    }
+}
+
+// Progress bar styles
+progressbar {
+    @include glass;
+    border-radius: 6px;
+    min-height: 8px;
+
+    trough {
+        background: rgba($nord3, 0.3);
+        border-radius: 4px;
+        min-height: 8px;
+    }
+
+    progress {
+        background: linear-gradient(90deg, $nord14, $nord8);
+        border-radius: 4px;
+        box-shadow: 0 0 6px rgba($nord8, 0.3);
+    }
+}
+
+// Label styles
+label {
+    color: $nord4;
+    font-weight: 400;
+
+    &.title {
+        font-size: 16px;
+        font-weight: 600;
+        color: $nord6;
+    }
+
+    &.subtitle {
+        font-size: 12px;
+        color: $nord3;
+    }
+
+    &.accent {
+        color: $nord8;
+        font-weight: 500;
+    }
+
+    &.warning {
+        color: $nord13;
+    }
+
+    &.error {
+        color: $nord11;
+    }
+
+    &.success {
+        color: $nord14;
+    }
+}
+
+// Icon styles
+.icon {
+    color: $nord4;
+    font-size: 18px;
+
+    &.accent {
+        color: $nord8;
+    }
+
+    &.warning {
+        color: $nord13;
+    }
+
+    &.error {
+        color: $nord11;
+    }
+
+    &.success {
+        color: $nord14;
+    }
+}
+
+// Container styles
+.box {
+    padding: 8px;
+
+    &.vertical {
+        flex-direction: column;
+    }
+
+    &.horizontal {
+        flex-direction: row;
+    }
+
+    &.center {
+        justify-content: center;
+        align-items: center;
+    }
+
+    &.spacing {
+        gap: 8px;
+    }
+
+    &.spacing-lg {
+        gap: 16px;
+    }
+}
+
+// Scrollable areas
+scrollable {
+    @include glass;
+    border-radius: 8px;
+}
+
+// Entry/input fields
+entry {
+    @include glass;
+    border-radius: 8px;
+    padding: 8px 12px;
+    margin: 4px;
+    background: rgba($nord1, 0.8);
+    border: 1px solid rgba($nord3, 0.5);
+
+    &:focus {
+        border-color: $nord8;
+        box-shadow: 0 0 8px rgba($nord8, 0.3);
+    }
+
+    &::placeholder {
+        color: $nord3;
+    }
+}
+
+// Special OSD animations
+.osd-popup {
+    animation: slideIn 300ms cubic-bezier(0.25, 0.1, 0.25, 1);
+
+    &.volume {
+        // Special volume OSD styling
+    }
+
+    &.brightness {
+        // Special brightness OSD styling
+    }
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px) scale(0.95);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+// Mini Dashboard specific styles
+window.minidashboard {
+    .container {
+        min-width: 320px;
+        max-width: 400px;
+    }
+
+    .header {
+        margin-bottom: 16px;
+        padding-bottom: 12px;
+        border-bottom: 1px solid rgba($nord3, 0.5);
+
+        .title {
+            font-size: 14px;
+            font-weight: 600;
+            color: $nord8;
+            margin-left: 8px;
+        }
+
+        .close-btn {
+            padding: 4px 8px;
+            border-radius: 6px;
+            background: rgba($nord11, 0.2);
+            border: 1px solid rgba($nord11, 0.3);
+
+            &:hover {
+                background: rgba($nord11, 0.4);
+                color: $nord6;
+            }
+
+            .icon {
+                font-size: 12px;
+                color: $nord11;
+            }
+        }
+    }
+
+    .controls-grid {
+        margin-bottom: 20px;
+
+        .control-row {
+            margin-bottom: 16px;
+
+            &:last-child {
+                margin-bottom: 0;
+            }
+
+            .control-item {
+                flex: 1;
+                margin: 0 4px;
+                padding: 12px;
+                @include glass;
+                border-radius: 10px;
+                transition: all 200ms ease;
+
+                &:hover {
+                    @include glass-hover;
+                }
+
+                .control-icon {
+                    font-size: 18px;
+                    color: $nord8;
+                    text-align: center;
+                    margin-bottom: 8px;
+                }
+            }
+        }
+    }
+
+    .quick-actions {
+        justify-content: center;
+        padding-top: 12px;
+        border-top: 1px solid rgba($nord3, 0.5);
+
+        .action-btn {
+            padding: 10px;
+            margin: 0 4px;
+            border-radius: 8px;
+            min-width: 44px;
+            min-height: 44px;
+            background: rgba($nord1, 0.8);
+
+            &:hover {
+                background: rgba($nord2, 0.9);
+                border: 1px solid rgba($nord8, 0.3);
+            }
+
+            &.primary {
+                @include frost-accent;
+
+                &:hover {
+                    background: linear-gradient(135deg,
+                        rgba($nord8, 0.3) 0%,
+                        rgba($nord9, 0.2) 50%,
+                        rgba($nord7, 0.3) 100%
+                    );
+                }
+            }
+
+            .icon {
+                font-size: 16px;
+            }
+        }
+    }
+
+    // Compact volume slider styling
+    .volume-control {
+        .title {
+            font-size: 11px;
+            color: $nord4;
+            text-align: center;
+            margin-bottom: 6px;
+        }
+
+        .volume-slider {
+            margin: 0 8px 6px;
+
+            trough {
+                background: rgba($nord3, 0.5);
+                border-radius: 4px;
+                min-height: 6px;
+
+                highlight {
+                    background: linear-gradient(90deg, $nord14, $nord13);
+                    border-radius: 4px;
+                }
+            }
+
+            slider {
+                background: $nord6;
+                border-radius: 50%;
+                min-width: 16px;
+                min-height: 16px;
+                border: 2px solid $nord2;
+                box-shadow: 0 2px 6px rgba($nord0, 0.3);
+            }
+        }
+
+        .subtitle {
+            font-size: 10px;
+            color: $nord4;
+            text-align: center;
+        }
+    }
+}
+
+// Responsive breakpoints
+@media (max-width: 600px) {
+    window.quicksettings {
+        min-width: 320px;
+        padding: 16px;
+    }
+
+    window.overview {
+        margin: 8px;
+        padding: 12px;
+        min-width: 320px;
+        min-height: 300px;
+    }
+
+    window.minidashboard {
+        min-width: 300px;
+        max-width: 350px;
+        padding: 16px;
+
+        .controls-grid .control-row .control-item {
+            padding: 8px;
+        }
+
+        .quick-actions .action-btn {
+            min-width: 40px;
+            min-height: 40px;
+            padding: 8px;
+        }
+    }
+}
