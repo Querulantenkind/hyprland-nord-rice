@@ -488,6 +488,753 @@ window.minidashboard {
     }
 }
 
+// ═══════════════════════════════════════════════════════════════════════════════
+// FULLSCREEN DASHBOARD STYLES
+// ═══════════════════════════════════════════════════════════════════════════════
+
+window.dashboard {
+    background: rgba($nord0, 0.92);
+    backdrop-filter: blur(40px) saturate(200%);
+    border-radius: 0;
+    margin: 0;
+    padding: 0;
+}
+
+.dashboard-container {
+    padding: 24px 40px;
+    min-height: 100%;
+}
+
+// Header styles
+.dashboard-header {
+    padding: 16px 24px;
+    margin-bottom: 24px;
+    border-bottom: 1px solid rgba($nord3, 0.4);
+    
+    .header-left {
+        gap: 4px;
+    }
+    
+    .greeting {
+        font-size: 18px;
+        font-weight: 500;
+        color: $nord4;
+        margin-top: 8px;
+    }
+}
+
+// Time widget
+.time-widget {
+    .time-display {
+        font-size: 64px;
+        font-weight: 700;
+        color: $nord6;
+        letter-spacing: -2px;
+        background: linear-gradient(135deg, $nord6 0%, $nord8 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+    
+    .date-display {
+        font-size: 16px;
+        color: $nord4;
+        margin-top: 4px;
+    }
+}
+
+// Weather widget styles
+.weather-compact {
+    @include glass;
+    border-radius: 16px;
+    padding: 16px 24px;
+    gap: 16px;
+    
+    .weather-icon-large {
+        font-size: 48px;
+        color: $nord8;
+    }
+    
+    .weather-info {
+        gap: 4px;
+    }
+    
+    .weather-temp {
+        font-size: 28px;
+        font-weight: 600;
+        color: $nord6;
+    }
+    
+    .weather-condition {
+        font-size: 14px;
+        color: $nord4;
+    }
+}
+
+.weather-widget {
+    @include glass;
+    border-radius: 16px;
+    padding: 20px;
+    
+    .weather-main {
+        gap: 20px;
+        margin-bottom: 20px;
+        
+        .weather-icon-xlarge {
+            font-size: 72px;
+            color: $nord8;
+            text-shadow: 0 4px 20px rgba($nord8, 0.3);
+        }
+        
+        .weather-primary {
+            gap: 4px;
+        }
+        
+        .weather-temp-large {
+            font-size: 42px;
+            font-weight: 700;
+            color: $nord6;
+        }
+        
+        .weather-condition-main {
+            font-size: 16px;
+            color: $nord4;
+        }
+        
+        .weather-location {
+            font-size: 12px;
+            color: $nord3;
+            margin-top: 4px;
+        }
+    }
+    
+    .weather-details {
+        background: rgba($nord2, 0.5);
+        border-radius: 12px;
+        padding: 12px;
+        margin-bottom: 16px;
+        
+        .weather-detail-item {
+            padding: 8px;
+            gap: 4px;
+            
+            .detail-icon {
+                font-size: 20px;
+                color: $nord8;
+            }
+            
+            .detail-value {
+                font-size: 14px;
+                font-weight: 600;
+                color: $nord6;
+            }
+            
+            .detail-label {
+                font-size: 11px;
+                color: $nord3;
+            }
+        }
+    }
+    
+    .weather-refresh {
+        background: rgba($nord2, 0.4);
+        border: 1px solid rgba($nord3, 0.3);
+        border-radius: 8px;
+        padding: 8px 16px;
+        
+        &:hover {
+            background: rgba($nord8, 0.2);
+            border-color: rgba($nord8, 0.4);
+        }
+    }
+}
+
+// Calendar widget styles
+.calendar-widget {
+    @include glass;
+    border-radius: 16px;
+    padding: 16px;
+    min-width: 280px;
+    
+    .calendar-header {
+        margin-bottom: 12px;
+        
+        .calendar-nav {
+            padding: 6px 10px;
+            border-radius: 8px;
+            background: transparent;
+            
+            &:hover {
+                background: rgba($nord8, 0.2);
+            }
+        }
+        
+        .calendar-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: $nord6;
+        }
+    }
+    
+    .weekday-header {
+        margin-bottom: 8px;
+        padding-bottom: 8px;
+        border-bottom: 1px solid rgba($nord3, 0.3);
+        
+        .weekday {
+            font-size: 11px;
+            font-weight: 600;
+            color: $nord8;
+            padding: 4px;
+        }
+    }
+    
+    .calendar-grid {
+        gap: 2px;
+        
+        .calendar-row {
+            gap: 2px;
+        }
+    }
+    
+    .calendar-day {
+        padding: 6px;
+        border-radius: 6px;
+        background: transparent;
+        min-width: 32px;
+        min-height: 32px;
+        
+        label {
+            font-size: 12px;
+        }
+        
+        &.current-month {
+            color: $nord4;
+            
+            &:hover {
+                background: rgba($nord8, 0.15);
+            }
+        }
+        
+        &.other-month {
+            color: $nord3;
+            opacity: 0.5;
+        }
+        
+        &.today {
+            @include frost-accent;
+            
+            label {
+                color: $nord6;
+                font-weight: 700;
+            }
+        }
+    }
+    
+    .calendar-today-btn {
+        margin-top: 12px;
+        padding: 8px 16px;
+        border-radius: 8px;
+        background: rgba($nord2, 0.4);
+        
+        &:hover {
+            background: rgba($nord8, 0.2);
+        }
+    }
+}
+
+.calendar-compact {
+    gap: 12px;
+    
+    .calendar-compact-day {
+        @include frost-accent;
+        border-radius: 12px;
+        padding: 8px 16px;
+        
+        .compact-weekday {
+            font-size: 11px;
+            color: $nord4;
+        }
+        
+        .compact-day-number {
+            font-size: 28px;
+            font-weight: 700;
+            color: $nord6;
+        }
+    }
+    
+    .compact-month {
+        font-size: 14px;
+        color: $nord4;
+    }
+}
+
+// Music widget styles
+.music-section {
+    .section-title {
+        font-size: 14px;
+        font-weight: 600;
+        color: $nord8;
+        margin-bottom: 12px;
+        padding-left: 4px;
+    }
+}
+
+.music-widget {
+    @include glass;
+    border-radius: 16px;
+    padding: 16px;
+    
+    .music-info-row {
+        gap: 16px;
+        margin-bottom: 16px;
+    }
+    
+    .music-album-art {
+        min-width: 80px;
+        min-height: 80px;
+        border-radius: 12px;
+        background: linear-gradient(135deg, $nord2, $nord3);
+        
+        .music-album-icon {
+            font-size: 32px;
+            color: $nord4;
+        }
+    }
+    
+    .music-text-info {
+        gap: 4px;
+        justify-content: center;
+    }
+    
+    .music-title {
+        font-size: 16px;
+        font-weight: 600;
+        color: $nord6;
+    }
+    
+    .music-artist {
+        font-size: 13px;
+        color: $nord4;
+    }
+    
+    .music-album {
+        font-size: 11px;
+        color: $nord3;
+    }
+    
+    .music-progress-container {
+        margin-bottom: 12px;
+    }
+    
+    .music-progress {
+        margin: 0;
+        
+        trough {
+            background: rgba($nord3, 0.4);
+            border-radius: 3px;
+            min-height: 4px;
+            
+            highlight {
+                background: linear-gradient(90deg, $nord14, $nord8);
+                border-radius: 3px;
+            }
+        }
+        
+        slider {
+            min-width: 12px;
+            min-height: 12px;
+            background: $nord6;
+            border-radius: 50%;
+            border: none;
+            box-shadow: 0 2px 6px rgba($nord0, 0.3);
+        }
+    }
+    
+    .music-time {
+        margin-top: 6px;
+        
+        .music-time-current,
+        .music-time-total {
+            font-size: 11px;
+            color: $nord3;
+        }
+    }
+    
+    .music-controls {
+        gap: 8px;
+        
+        .music-btn {
+            padding: 10px;
+            border-radius: 50%;
+            background: transparent;
+            min-width: 40px;
+            min-height: 40px;
+            
+            label {
+                font-size: 18px;
+                color: $nord4;
+            }
+            
+            &:hover {
+                background: rgba($nord8, 0.2);
+                
+                label {
+                    color: $nord6;
+                }
+            }
+            
+            &.play-pause {
+                @include frost-accent;
+                min-width: 48px;
+                min-height: 48px;
+                
+                label {
+                    font-size: 24px;
+                    color: $nord6;
+                }
+            }
+        }
+    }
+    
+    .music-player-name {
+        font-size: 11px;
+        color: $nord3;
+        margin-top: 12px;
+        text-align: center;
+    }
+}
+
+.no-media-widget {
+    @include glass;
+    border-radius: 16px;
+    padding: 32px;
+    gap: 8px;
+    
+    .no-media-icon {
+        font-size: 48px;
+        color: $nord3;
+    }
+    
+    .no-media-text {
+        font-size: 14px;
+        color: $nord4;
+    }
+    
+    .no-media-hint {
+        font-size: 12px;
+        color: $nord3;
+    }
+}
+
+.music-compact {
+    gap: 8px;
+    padding: 8px 12px;
+    
+    .music-icon {
+        font-size: 18px;
+        color: $nord14;
+    }
+    
+    .music-title-compact {
+        font-size: 13px;
+        color: $nord4;
+    }
+}
+
+// App launcher styles
+.app-launcher {
+    gap: 16px;
+}
+
+.app-search-container {
+    @include glass;
+    border-radius: 16px;
+    padding: 12px 20px;
+    gap: 12px;
+    
+    .search-icon {
+        font-size: 18px;
+        color: $nord4;
+    }
+    
+    .app-search {
+        background: transparent;
+        border: none;
+        box-shadow: none;
+        font-size: 16px;
+        color: $nord6;
+        padding: 0;
+        margin: 0;
+        
+        &:focus {
+            border: none;
+            box-shadow: none;
+        }
+    }
+    
+    .search-clear {
+        padding: 4px 8px;
+        border-radius: 6px;
+        background: rgba($nord11, 0.2);
+        
+        label {
+            color: $nord11;
+        }
+        
+        &:hover {
+            background: rgba($nord11, 0.3);
+        }
+    }
+}
+
+.quick-launch {
+    gap: 8px;
+    justify-content: center;
+    padding: 8px 0;
+    
+    .quick-launch-btn {
+        padding: 12px;
+        border-radius: 12px;
+        background: rgba($nord2, 0.5);
+        min-width: 48px;
+        min-height: 48px;
+        
+        .quick-launch-icon {
+            font-size: 20px;
+            color: $nord4;
+        }
+        
+        &:hover {
+            background: rgba($nord8, 0.2);
+            
+            .quick-launch-icon {
+                color: $nord6;
+            }
+        }
+    }
+}
+
+.apps-container {
+    margin-top: 8px;
+}
+
+.all-apps-scroll,
+.search-scroll {
+    border-radius: 16px;
+    background: transparent;
+}
+
+.all-apps-grid,
+.search-grid {
+    padding: 16px;
+}
+
+.app-item {
+    padding: 12px;
+    border-radius: 16px;
+    background: transparent;
+    min-width: 100px;
+    gap: 8px;
+    
+    .app-icon {
+        min-width: 48px;
+        min-height: 48px;
+    }
+    
+    .app-name {
+        font-size: 12px;
+        color: $nord4;
+        text-align: center;
+    }
+    
+    &:hover {
+        @include glass-hover;
+        
+        .app-name {
+            color: $nord6;
+        }
+    }
+}
+
+// Dashboard body layout
+.dashboard-body {
+    gap: 24px;
+}
+
+.dashboard-sidebar {
+    min-width: 320px;
+    max-width: 360px;
+    gap: 20px;
+    
+    &.left,
+    &.right {
+        padding: 0 8px;
+    }
+    
+    .sidebar-section {
+        margin-bottom: 8px;
+    }
+}
+
+.dashboard-main {
+    gap: 20px;
+    padding: 0 16px;
+}
+
+// Workspace preview
+.workspace-preview {
+    @include glass;
+    border-radius: 16px;
+    padding: 16px 20px;
+    
+    .section-title {
+        font-size: 14px;
+        font-weight: 600;
+        color: $nord8;
+        margin-bottom: 12px;
+    }
+    
+    .workspace-grid {
+        gap: 8px;
+        justify-content: center;
+    }
+    
+    .workspace-btn {
+        min-width: 56px;
+        min-height: 48px;
+        padding: 8px 12px;
+        border-radius: 10px;
+        background: rgba($nord2, 0.5);
+        
+        .workspace-number {
+            font-size: 18px;
+            font-weight: 600;
+            color: $nord4;
+        }
+        
+        .workspace-windows {
+            font-size: 10px;
+            color: $nord3;
+        }
+        
+        &:hover {
+            background: rgba($nord8, 0.2);
+        }
+        
+        &.active {
+            @include frost-accent;
+            
+            .workspace-number {
+                color: $nord6;
+            }
+            
+            .workspace-windows {
+                color: $nord8;
+            }
+        }
+    }
+}
+
+.app-launcher-container {
+    @include glass;
+    border-radius: 20px;
+    padding: 16px;
+}
+
+// Footer styles
+.dashboard-footer {
+    padding: 16px 24px;
+    margin-top: 24px;
+    border-top: 1px solid rgba($nord3, 0.4);
+}
+
+.quick-info {
+    gap: 24px;
+    
+    .info-item {
+        gap: 8px;
+        padding: 8px 16px;
+        background: rgba($nord2, 0.4);
+        border-radius: 10px;
+        
+        .info-icon {
+            font-size: 18px;
+            color: $nord8;
+        }
+        
+        .info-value {
+            font-size: 14px;
+            font-weight: 500;
+            color: $nord4;
+        }
+    }
+}
+
+.power-buttons {
+    gap: 8px;
+    
+    .power-btn {
+        padding: 12px;
+        border-radius: 12px;
+        min-width: 44px;
+        min-height: 44px;
+        background: rgba($nord2, 0.5);
+        
+        label {
+            font-size: 18px;
+            color: $nord4;
+        }
+        
+        &:hover {
+            background: rgba($nord8, 0.2);
+            
+            label {
+                color: $nord6;
+            }
+        }
+        
+        &.lock:hover {
+            background: rgba($nord13, 0.2);
+            label { color: $nord13; }
+        }
+        
+        &.logout:hover {
+            background: rgba($nord11, 0.2);
+            label { color: $nord11; }
+        }
+        
+        &.settings:hover {
+            background: rgba($nord8, 0.2);
+            label { color: $nord8; }
+        }
+    }
+}
+
+// Section title common style
+.section-title {
+    font-size: 14px;
+    font-weight: 600;
+    color: $nord8;
+    margin-bottom: 12px;
+    padding-left: 4px;
+}
+
+// Dashboard open animation
+@keyframes dashboardFadeIn {
+    from {
+        opacity: 0;
+        transform: scale(0.98);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+.dashboard-container {
+    animation: dashboardFadeIn 200ms cubic-bezier(0.25, 0.1, 0.25, 1);
+}
+
 // Responsive breakpoints
 @media (max-width: 600px) {
     window.quicksettings {
@@ -516,5 +1263,17 @@ window.minidashboard {
             min-height: 40px;
             padding: 8px;
         }
+    }
+    
+    // Dashboard responsive
+    .dashboard-body {
+        flex-direction: column;
+    }
+    
+    .dashboard-sidebar {
+        min-width: 100%;
+        max-width: 100%;
+        flex-direction: row;
+        flex-wrap: wrap;
     }
 }

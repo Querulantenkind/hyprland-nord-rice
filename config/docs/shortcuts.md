@@ -105,6 +105,16 @@ All available keybindings in the Hyprland Nord Rice setup. `$mainMod` is the SUP
 | `$mainMod + Escape` | Lock screen | Locks the screen |
 | `$mainMod SHIFT + E` | Exit Hyprland | Exits the entire session |
 
+## AGS Dashboard & Overlays
+
+| Keybinding | Action | Description |
+|------------|--------|-------------|
+| `$mainMod + A` | Fullscreen Dashboard | Opens GNOME/macOS-style dashboard with weather, calendar, music, apps |
+| `$mainMod CTRL + Space` | Quick Settings | Opens quick settings panel |
+| `$mainMod CTRL + P` | Power Menu | Opens power/logout menu |
+| `$mainMod CTRL + O` | Workspace Overview | Shows workspace overview |
+| `$mainMod CTRL + D` | Mini Dashboard | Opens compact control dashboard |
+
 ## Easter Eggs & Bonus Features
 
 | Keybinding | Action | Description |

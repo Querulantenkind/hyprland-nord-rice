@@ -87,6 +87,47 @@ Das Hyprland Nord Rice ist ein vollständig integriertes Desktop-Environment mit
 - **Waybar Integration:** Rechtsklick auf Power-Button für schnellen Zugriff
 - **Smooth Animations:** Flüssige Übergänge und Hover-Effekte
 
+## 🖥️ Fullscreen Dashboard (NEU!)
+
+Das Fullscreen Dashboard ist ein GNOME/macOS-inspiriertes Overlay, das per `SUPER + A` geöffnet wird.
+
+### Layout-Bereiche
+
+#### Header
+- **Große Uhrzeit:** Elegante Zeit-Anzeige mit Gradienten-Effekt
+- **Datum & Begrüßung:** Personalisierte Begrüßung basierend auf Tageszeit
+- **Wetter-Widget:** Kompakte Wetteranzeige mit aktuellen Bedingungen
+
+#### Linke Sidebar
+- **Wetter-Details:** Ausführliche Wetterinformationen (Temperatur, Gefühlte Temperatur, Luftfeuchtigkeit, Wind)
+- **Musik-Player:** Vollständiger MPRIS-Musikplayer mit Album-Art, Wiedergabesteuerung und Fortschrittsanzeige
+
+#### Hauptbereich
+- **Workspace-Übersicht:** Schneller Wechsel zwischen allen 10 Workspaces
+- **App-Launcher:** Durchsuchbare App-Liste mit Favoriten und Quick-Launch-Buttons
+- **Suchleiste:** Fuzzy-Suche durch alle installierten Anwendungen
+
+#### Rechte Sidebar
+- **Kalender-Widget:** Interaktiver Monatskalender mit Navigation
+- **System-Stats:** CPU-, RAM- und Batterie-Übersicht
+
+#### Footer
+- **System-Info:** Batteriestatus, Uptime, aktive Fenster
+- **Power-Buttons:** Sperren, Abmelden, Einstellungen
+
+### Features
+- **Fullscreen Overlay:** Bedeckt den gesamten Bildschirm mit halbtransparentem Hintergrund
+- **Glass-Effekte:** Nord-thematisierte Glass-Morphism-Ästhetik
+- **Keyboard Navigation:** Escape oder SUPER schließt das Dashboard
+- **Hot-Reload:** Änderungen an den Styles werden live aktualisiert
+- **MPRIS-Integration:** Steuert Spotify, Firefox, VLC und andere Mediaplayer
+- **Wetter-API:** Automatische Standorterkennung via wttr.in
+
+### Tastenkombinationen
+- `SUPER + A` - Dashboard öffnen/schließen
+- `Escape` - Dashboard schließen
+- Suche direkt eintippen zum App-Finden
+
 ## 🎯 Wofi Application Launcher
 
 ### Multimodale Oberfläche
