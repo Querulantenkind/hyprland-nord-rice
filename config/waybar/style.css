@@ -248,3 +248,89 @@ tooltip label {
 #custom-power {
     margin-right: 3px;
 }
+
+/* ══════════════════════════════════════════════════════════════════════════════
+   MEDIA PLAYER WIDGET
+   ══════════════════════════════════════════════════════════════════════════════ */
+#custom-media {
+    background: linear-gradient(135deg, @nord1, @nord2);
+    color: @nord14;
+    padding: 0 15px;
+    margin: 3px 3px;
+    border-radius: 10px;
+    border-left: 3px solid @nord14;
+    transition: all 0.3s ease;
+}
+
+#custom-media.playing {
+    color: @nord14;
+    border-left-color: @nord14;
+    animation: media-pulse 2s ease-in-out infinite;
+}
+
+#custom-media.paused {
+    color: @nord13;
+    border-left-color: @nord13;
+    opacity: 0.8;
+}
+
+#custom-media.stopped {
+    color: @nord3;
+    border-left-color: @nord3;
+    opacity: 0.5;
+}
+
+#custom-media:hover {
+    background: linear-gradient(135deg, @nord2, @nord3);
+    color: @nord6;
+}
+
+@keyframes media-pulse {
+    0%, 100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.85;
+    }
+}
+
+/* ══════════════════════════════════════════════════════════════════════════════
+   GPU WIDGET
+   ══════════════════════════════════════════════════════════════════════════════ */
+#custom-gpu {
+    background: @nord0;
+    color: @nord15;
+    padding: 0 12px;
+    margin: 3px 3px;
+    border-radius: 10px;
+}
+
+#custom-gpu.normal {
+    color: @nord15;
+}
+
+#custom-gpu.warning {
+    color: @nord13;
+}
+
+#custom-gpu.critical {
+    color: @nord11;
+    animation: blink 0.5s linear infinite alternate;
+}
+
+/* ══════════════════════════════════════════════════════════════════════════════
+   AUDIO VISUALIZER
+   ══════════════════════════════════════════════════════════════════════════════ */
+#custom-audio-visualizer {
+    background: @nord0;
+    color: @nord8;
+    padding: 0 10px;
+    margin: 3px 3px;
+    border-radius: 10px;
+    font-family: "JetBrains Mono Nerd Font";
+}
+
+#custom-audio-visualizer:hover {
+    background: @nord1;
+    color: @nord7;
+}

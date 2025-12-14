@@ -33,7 +33,7 @@ All available keybindings in the Hyprland Nord Rice setup. `$mainMod` is the SUP
 
 | Keybinding | Action | Description |
 |------------|--------|-------------|
-| `$mainMod + Tab` | Next window | Jumps to next window |
+| `$mainMod + Tab` | Hyprspace Overview | Opens macOS/GNOME-style workspace overview with drag & drop |
 | `$mainMod SHIFT + Tab` | Previous window | Jumps to previous window |
 | `$mainMod + W` | Window groups | Toggles window groups |
 | `$mainMod + G` | Next group | Jumps to next group |

@@ -7,7 +7,7 @@
     "margin-left": 10,
     "margin-right": 10,
 
-    "modules-left": ["hyprland/workspaces"],
+    "modules-left": ["hyprland/workspaces", "custom/media"],
     "modules-center": ["clock"],
     "modules-right": ["tray", "cpu", "memory", "temperature", "pulseaudio", "network", "battery", "custom/audio-visualizer", "custom/updates", "custom/weather", "custom/power"],
 
@@ -141,5 +141,32 @@
         "tooltip": false,
         "on-click": "wlogout",
         "on-click-right": "~/.config/scripts/mini-dashboard.sh"
+    },
+
+    "custom/media": {
+        "format": "{icon} {}",
+        "format-icons": {
+            "Playing": "󰎆",
+            "Paused": "󰏤",
+            "Stopped": "󰓛"
+        },
+        "return-type": "json",
+        "max-length": 40,
+        "exec": "~/.config/waybar/scripts/mediaplayer.sh",
+        "on-click": "playerctl play-pause",
+        "on-click-right": "playerctl next",
+        "on-click-middle": "playerctl previous",
+        "on-scroll-up": "playerctl volume 0.05+",
+        "on-scroll-down": "playerctl volume 0.05-",
+        "escape": true,
+        "tooltip": true
+    },
+
+    "custom/gpu": {
+        "format": "󰢮 {}",
+        "return-type": "json",
+        "interval": 5,
+        "exec": "~/.config/waybar/scripts/gpu-usage.sh",
+        "tooltip": true
     }
 }
