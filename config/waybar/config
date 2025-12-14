@@ -7,9 +7,9 @@
     "margin-left": 10,
     "margin-right": 10,
 
-    "modules-left": ["hyprland/workspaces", "custom/media"],
+    "modules-left": ["hyprland/workspaces", "hyprland/window", "custom/media"],
     "modules-center": ["clock"],
-    "modules-right": ["tray", "cpu", "memory", "temperature", "pulseaudio", "network", "battery", "custom/audio-visualizer", "custom/updates", "custom/weather", "custom/power"],
+    "modules-right": ["tray", "cpu", "memory", "temperature", "pulseaudio", "battery", "custom/audio-visualizer", "custom/updates", "custom/weather", "custom/power"],
 
     "hyprland/workspaces": {
         "format": "{icon}",
@@ -33,6 +33,18 @@
         }
     },
 
+    "hyprland/window": {
+        "format": "{}",
+        "max-length": 50,
+        "separate-outputs": true,
+        "rewrite": {
+            "(.*) - Mozilla Firefox": " $1",
+            "(.*) - Visual Studio Code": "󰨞 $1",
+            "(.*) - Cursor": "󰨞 $1",
+            "kitty": " Terminal",
+            "": "󰣇 Desktop"
+        }
+    },
 
     "clock": {
         "format": "  {:%H:%M}",
@@ -61,15 +73,6 @@
         },
         "on-click": "pavucontrol",
         "on-click-right": "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"
-    },
-
-    "network": {
-        "format-wifi": "󰖩  {signalStrength}%",
-        "format-ethernet": "󰈀  {ifname}",
-        "format-linked": "󰈀  {ifname}",
-        "format-disconnected": "󰖪  Offline",
-        "tooltip-format": "{essid} - {ifname}",
-        "on-click": "nm-connection-editor"
     },
 
     "battery": {
