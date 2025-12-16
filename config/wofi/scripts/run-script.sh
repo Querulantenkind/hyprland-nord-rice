@@ -3,8 +3,9 @@
 # Wofi Script Runner
 # Run custom scripts from a dedicated directory
 
-# Script directory
+# Script directories (primary and fallback)
 SCRIPT_DIR="$HOME/.config/hypr/scripts"
+SCRIPT_DIR_ALT="$HOME/.config/scripts"
 mkdir -p "$SCRIPT_DIR"
 
 # Colors for output
@@ -106,8 +107,19 @@ if [ -z "$(ls -A "$SCRIPT_DIR")" ]; then
     create_default_scripts
 fi
 
-# Get list of available scripts
-SCRIPTS=$(find "$SCRIPT_DIR" -maxdepth 1 -type f -executable -printf '%P\n' | sort)
+# Get list of available scripts from both directories
+SCRIPTS=""
+if [ -d "$SCRIPT_DIR" ]; then
+    SCRIPTS+=$(find "$SCRIPT_DIR" -maxdepth 1 -type f -executable -printf '%P\n' 2>/dev/null)
+fi
+if [ -d "$SCRIPT_DIR_ALT" ]; then
+    ALT_SCRIPTS=$(find "$SCRIPT_DIR_ALT" -maxdepth 1 -type f -executable -printf '%P\n' 2>/dev/null)
+    if [ -n "$ALT_SCRIPTS" ]; then
+        [ -n "$SCRIPTS" ] && SCRIPTS+="\n"
+        SCRIPTS+="$ALT_SCRIPTS"
+    fi
+fi
+SCRIPTS=$(echo -e "$SCRIPTS" | sort -u)
 
 if [ -z "$SCRIPTS" ]; then
     echo -e "${NORD11}Keine ausführbaren Scripts in $SCRIPT_DIR gefunden${RESET}"
@@ -121,11 +133,16 @@ SELECTED=$(echo "$SCRIPTS" | wofi --dmenu --prompt "Script ausführen:" --width 
 
 # Execute selected script
 if [ -n "$SELECTED" ]; then
-    SCRIPT_PATH="$SCRIPT_DIR/$SELECTED"
-    if [ -x "$SCRIPT_PATH" ]; then
-        echo -e "${NORD14}Führe $SELECTED aus...${RESET}"
-        "$SCRIPT_PATH" &
+    # Check both directories for the script
+    if [ -x "$SCRIPT_DIR/$SELECTED" ]; then
+        SCRIPT_PATH="$SCRIPT_DIR/$SELECTED"
+    elif [ -x "$SCRIPT_DIR_ALT/$SELECTED" ]; then
+        SCRIPT_PATH="$SCRIPT_DIR_ALT/$SELECTED"
     else
-        echo -e "${NORD11}Script $SELECTED ist nicht ausführbar${RESET}"
+        echo -e "${NORD11}Script $SELECTED nicht gefunden${RESET}"
+        exit 1
     fi
+    
+    echo -e "${NORD14}Führe $SELECTED aus...${RESET}"
+    "$SCRIPT_PATH" &
 fi
